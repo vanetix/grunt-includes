@@ -1,0 +1,21 @@
+{
+  "name": "grunt-includes",
+  "description": "Include other files within a file.",
+  "version": "0.0.1",
+  "author": "vanetix <matmcfarland@gmail.com>",
+  "main": "grunt.js",
+  "bin": "bin/grunt-includes",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vanetix/grunt-includes.git"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "grunt": "~0.4.0"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
