@@ -1,4 +1,4 @@
-# grunt-includes
+# grunt-includes [![Build Status](https://travis-ci.org/vanetix/grunt-includes.png?branch=master)](https://travis-ci.org/vanetix/grunt-includes)
 ***Only works with grunt >= 0.4.0***
 
 A grunt task for including a file within another file (think php includes).
