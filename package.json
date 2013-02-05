@@ -3,7 +3,7 @@
   "description": "Include other files within a file.",
   "version": "0.0.1",
   "author": "vanetix <matmcfarland@gmail.com>",
-  "main": "grunt.js",
+  "main": "Gruntfile.js",
   "bin": "bin/grunt-includes",
   "repository": {
     "type": "git",
@@ -12,10 +12,16 @@
   "scripts": {
     "test": "grunt test"
   },
-  "dependencies": {
-    "grunt": "~0.4.0"
+  "devDependencies": {
+    "grunt": "~0.4.0rc7",
+    "grunt-contrib-jshint": "~0.1.1rc6",
+    "grunt-contrib-nodeunit": "~0.1.2rc6",
+    "grunt-contrib-clean": "0.4.0rc6"
   },
   "keywords": [
     "gruntplugin"
-  ]
+  ],
+  "engines": {
+    "node": ">= 0.8.0"
+  }
 }
