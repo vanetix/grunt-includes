@@ -11,6 +11,7 @@ module.exports = function(grunt) {
   /**
    * Dependencies
    */
+
   var path = require('path');
 
   /**
@@ -21,14 +22,10 @@ module.exports = function(grunt) {
 
   /**
    * Core `grunt-includes` task
+   * Iterates over all source files and calls `recurse(path)` on each
    */
 
   grunt.registerMultiTask('includes', 'Your task description goes here.', function() {
-
-    /**
-     * Iterate over all source files and build any includes
-     */
-
     this.files.forEach(function(f) {
       var src = f.src.filter(function(path) {
         if(grunt.file.exists(path)) {
