@@ -57,8 +57,8 @@ includes: {
 ```
 
 ## Release History
-0.1.0 - Updated for grunt 0.4
-0.0.1 - Initial release
+- 0.1.0 - Updated for grunt 0.4
+- 0.0.1 - Initial release
 
 ## License (MIT)
 Copyright (c) 2013 Matt McFarland  
