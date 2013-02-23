@@ -4,9 +4,9 @@
 A grunt task for including a file within another file (think php includes). *Circular* imports will break the recursive strategy.
 
 ## Getting Started
-Install this grunt plugin next to your project's [grunt.js gruntfile][getting_started] with: `npm install grunt-includes`
+Install this grunt plugin next to your project's *Gruntfile.js* with: `npm install grunt-includes`
 
-Then add this line to your project's `grunt.js` gruntfile:
+Then add this line to your project's `Gruntfile.js`:
 
 ```javascript
 grunt.loadNpmTasks('grunt-includes');
