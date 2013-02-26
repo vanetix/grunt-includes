@@ -25,9 +25,18 @@ module.exports = function(grunt) {
 
     // Build the test cases
     includes: {
+      options: {
+        debug: false
+      },
       tests: {
-        src: ['test/cases/simple.html', 'test/cases/complex.html'],
+        cwd: 'test',
+        src: ['**/*.html'],
         dest: 'tmp'
+      },
+      flatten: {
+        flatten: true,
+        src: ['test/cases/complex.html'],
+        dest: 'tmp/flatten'
       }
     }
   });

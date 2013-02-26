@@ -21,31 +21,72 @@ module.exports = function(grunt) {
   var regex = /^(\s*)include\s+"(\S+)"\s*$/; 
 
   /**
+  * Format of comments for debug
+  */
+
+  var html_comment = '<!-- %s -->', cstyle_comment = '/* --- %s --- */';
+
+  /**
    * Core `grunt-includes` task
    * Iterates over all source files and calls `recurse(path)` on each
    */
 
   grunt.registerMultiTask('includes', 'Your task description goes here.', function() {
+    var opts = this.options({
+      regex: regex,
+      pos: 2, // the regex match group pos
+      nodup: false, // no duplicate files, that means already included files will not be imported again
+      comment: null, // default comment based on filename
+      debug: process.env.DEBUG 
+    });
+
+    var use_default_comment = !opts.comment;
+
     this.files.forEach(function(f) {
-      var src = f.src.filter(function(path) {
-        if(grunt.file.exists(path)) {
+      var cwd = f.cwd;
+      var src = f.src.filter(function(p) {
+        p = cwd ? path.join(cwd, p) : p;
+        if(grunt.file.exists(p)) {
           return true;
         } else {
-          grunt.log.warn('Source file "' + path + '" not found.');
+          grunt.log.warn('Source file "' + p + '" not found.');
           return false;
         }
       });
 
-      if(grunt.file.isFile(f.dest)) {
-        grunt.fail.warn('Destination directory "' + f.dest + '" is a file.');
+      var isfile = grunt.file.isFile(f.dest);
+
+      if (src.length > 1 && isfile) {
+        grunt.log.warn('Source file cannot be more than one when dest is a file.');
       }
 
-      src.forEach(function(file) {
-        grunt.file.write(path.join(f.dest, path.basename(file)), recurse(file));
+      var flatten = f.flatten;
+
+      src.forEach(function(p) {
+        var save_name = flatten ? path.basename(p) : p;
+        var dest_file = isfile ? f.dest : path.join(f.dest, save_name);
+
+        p = cwd ? path.join(cwd, p) : p;
+
+        if (use_default_comment) {
+          opts.comment =  isHtml(dest_file) ? html_comment : cstyle_comment;
+        }
+        grunt.file.write(dest_file, recurse(p, opts));
+        grunt.log.oklns('Saved ' + dest_file);
       });
       
     });
   });
+
+  /**
+   * Helper to define whether it is a html file
+   *
+   * @param {String} p
+   * @return {Boolean}
+   */
+  function isHtml(p) {
+    return ['html', 'htm'].indexOf(p.split('.').pop()) !== -1;
+  }
 
   /**
    * Helper for `includes` builds all includes for `p`
@@ -54,18 +95,37 @@ module.exports = function(grunt) {
    * @return {String}
    */
 
-  function recurse(p) {
+  function recurse(p, opts, included) {
     if(!grunt.file.isFile(p)) {
       grunt.log.warn('Included file "' + p + '" not found.');
       return 'Error including "' + p + '".';
     }
 
+    included = included || {};
+
+    var comment = opts.comment;
+
+    if (opts.nodup && (p in included)) {
+      var msg = 'File ' + p + ' included before, skip';
+      grunt.log.debug(msg);
+      return opts.debug && comment.replace('%s', msg) || '';
+    }
+
+    included[p] = 1;
+
     var src = grunt.file.read(p).split(grunt.util.linefeed);
     var compiled = src.map(function(line) {
-      var match = line.match(regex);
+      var match = line.match(opts.regex);
 
       if(match) {
-        return recurse(path.join(path.dirname(p), match[2]));
+        var f = path.join(path.dirname(p), match[opts.pos]);
+        line = recurse(f, opts, included);
+        if (opts.debug) {
+          var msg_begin = 'File: ' + f;
+          var msg_end = 'EOF: ' + f;
+          line = comment.replace('%s', msg_begin) + '\n' + line + '\n'; 
+          line = line + comment.replace('%s', msg_end); 
+        }
       }
       return line;
     });
