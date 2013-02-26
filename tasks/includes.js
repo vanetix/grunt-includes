@@ -118,10 +118,11 @@ module.exports = function(grunt) {
       var match = line.match(opts.regex);
 
       if(match) {
-        line = recurse(path.join(path.dirname(p), match[opts.pos]), opts, included);
+        var f = path.join(path.dirname(p), match[opts.pos]);
+        line = recurse(f, opts, included);
         if (opts.debug) {
-          var msg_begin = 'File: ' + p;
-          var msg_end = 'EOF: ' + p;
+          var msg_begin = 'File: ' + f;
+          var msg_end = 'EOF: ' + f;
           line = comment.replace('%s', msg_begin) + '\n' + line + '\n'; 
           line = line + comment.replace('%s', msg_end); 
         }
