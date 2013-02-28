@@ -21,10 +21,15 @@ module.exports = function(grunt) {
   var regex = /^(\s*)include\s+"(\S+)"\s*$/; 
 
   /**
-  * Format of comments for debug
-  */
+   * Format of comments per file extension
+   */
 
-  var html_comment = '<!-- %s -->', cstyle_comment = '/* --- %s --- */';
+  var commentStyle = {
+    js: "/* %s */",
+    css: "/* %s */",
+    html: "<!-- %s -->",
+    generic: "/* %s */"
+  };
 
   /**
    * Core `grunt-includes` task
@@ -40,8 +45,6 @@ module.exports = function(grunt) {
       debug: process.env.DEBUG 
     });
 
-    var use_default_comment = !opts.comment;
-
     this.files.forEach(function(f) {
       var cwd = f.cwd;
       var src = f.src.filter(function(p) {
@@ -54,9 +57,7 @@ module.exports = function(grunt) {
         }
       });
 
-      var isfile = grunt.file.isFile(f.dest);
-
-      if (src.length > 1 && isfile) {
+      if(src.length > 1 && grunt.file.isFile(f.dest)) {
         grunt.log.warn('Source file cannot be more than one when dest is a file.');
       }
 
@@ -68,8 +69,8 @@ module.exports = function(grunt) {
 
         p = cwd ? path.join(cwd, p) : p;
 
-        if (use_default_comment) {
-          opts.comment =  isHtml(dest_file) ? html_comment : cstyle_comment;
+        if (opts.comment) {
+          opts.comment = commentStyle[fileType(p)] || commentStyle['generic'];
         }
         grunt.file.write(dest_file, recurse(p, opts));
         grunt.log.oklns('Saved ' + dest_file);
@@ -79,13 +80,14 @@ module.exports = function(grunt) {
   });
 
   /**
-   * Helper to define whether it is a html file
+   * Is file with path `p` an html file?
    *
    * @param {String} p
    * @return {Boolean}
    */
-  function isHtml(p) {
-    return ['html', 'htm'].indexOf(p.split('.').pop()) !== -1;
+
+  function fileType(p) {
+    return path.extname(p).slice(1);
   }
 
   /**
