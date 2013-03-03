@@ -59,19 +59,14 @@ module.exports = function(grunt) {
         grunt.log.warn('Source file cannot be more than one when dest is a file.');
       }
 
-      var flatten = f.flatten;
-
       src.forEach(function(p) {
-        var save_name = flatten ? path.basename(p) : p;
-        var dest_file = isfile ? f.dest : path.join(f.dest, save_name);
+        var fileName = f.flatten ? path.basename(p) : p;
+        var outFile = grunt.file.isFile(f.dest) ? f.dest : path.join(f.dest, fileName);
 
         p = cwd ? path.join(cwd, p) : p;
 
-        if (opts.comment) {
-          opts.comment = commentStyle[fileType(p)] || commentStyle['generic'];
-        }
-        grunt.file.write(dest_file, recurse(p, opts));
-        grunt.log.oklns('Saved ' + dest_file);
+        grunt.file.write(outFile, recurse(p, opts));
+        grunt.log.oklns('Saved ' + outFile);
       });
       
     });
