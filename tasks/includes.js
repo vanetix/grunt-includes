@@ -18,7 +18,7 @@ module.exports = function(grunt) {
    * Regex for parsing includes
    */
 
-  var regex = /^(\s*)include\s+"(\S+)"\s*$/; 
+  var defaultRegexp = /^(\s*)include\s+"(\S+)"\s*$/; 
 
   /**
    * Format of comments per file extension
@@ -36,13 +36,11 @@ module.exports = function(grunt) {
    * Iterates over all source files and calls `recurse(path)` on each
    */
 
-  grunt.registerMultiTask('includes', 'Your task description goes here.', function() {
+  grunt.registerMultiTask('includes', 'Include other files within files.', function() {
     var opts = this.options({
-      regex: regex,
-      pos: 2, // the regex match group pos
-      nodup: false, // no duplicate files, that means already included files will not be imported again
-      comment: null, // default comment based on filename
-      debug: process.env.DEBUG 
+      debug: false,
+      duplicates: true,
+      includeRegexp: defaultRegexp
     });
 
     this.files.forEach(function(f) {
@@ -107,7 +105,7 @@ module.exports = function(grunt) {
 
     var comment = opts.comment;
 
-    if (opts.nodup && (p in included)) {
+    if(opts.duplicates && (p in included)) {
       var msg = 'File ' + p + ' included before, skip';
       grunt.log.debug(msg);
       return opts.debug && comment.replace('%s', msg) || '';
@@ -117,7 +115,7 @@ module.exports = function(grunt) {
 
     var src = grunt.file.read(p).split(grunt.util.linefeed);
     var compiled = src.map(function(line) {
-      var match = line.match(opts.regex);
+      var match = line.match(opts.includeRegexp);
 
       if(match) {
         var f = path.join(path.dirname(p), match[opts.pos]);
