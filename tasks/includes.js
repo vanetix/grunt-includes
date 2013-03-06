@@ -21,17 +21,6 @@ module.exports = function(grunt) {
   var defaultRegexp = /^(\s*)include\s+"(\S+)"\s*$/; 
 
   /**
-   * Format of comments per file extension
-   */
-
-  var commentStyle = {
-    js: "/* %s */",
-    css: "/* %s */",
-    html: "<!-- %s -->",
-    generic: "/* %s */"
-  };
-
-  /**
    * Core `grunt-includes` task
    * Iterates over all source files and calls `recurse(path)` on each
    */
@@ -73,14 +62,23 @@ module.exports = function(grunt) {
   });
 
   /**
-   * Is file with path `p` an html file?
+   * Returns the comment style for file `p`
    *
    * @param {String} p
-   * @return {Boolean}
+   * @return {String}
    */
 
-  function fileType(p) {
-    return path.extname(p).slice(1);
+  function commentStyle(p) {
+    var comments,
+        ext = path.extname(p).slice(1);
+
+    comments = {
+      js: "/* %s */",
+      css: "/* %s */",
+      html: "<!-- %s -->"
+    };
+
+    return comments[ext] || '/* %s */';
   }
 
   /**
