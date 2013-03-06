@@ -89,33 +89,38 @@ module.exports = function(grunt) {
    */
 
   function recurse(p, opts, included) {
+    var src, next, match, error, comment, compiled;
+
+    comment = commentStyle(p);
+    included = included || [];
+
     if(!grunt.file.isFile(p)) {
       grunt.log.warn('Included file "' + p + '" not found.');
       return 'Error including "' + p + '".';
     }
 
-    included = included || {};
+    if(opts.duplicates && ~included.indexOf(p)) {
+      error = 'Duplicate include: ' + p + ' skipping.';
+      grunt.log.debug(error);
 
-    var comment = opts.comment;
-
-    if(opts.duplicates && (p in included)) {
-      var msg = 'File ' + p + ' included before, skip';
-      grunt.log.debug(msg);
-      return opts.debug && comment.replace('%s', msg) || '';
+      if(opts.debug) {
+        return comment.replace(/%s/g, error);
+      } else {
+        return '';
+      }
     }
 
-    included[p] = 1;
-
-    var src = grunt.file.read(p).split(grunt.util.linefeed);
-    var compiled = src.map(function(line) {
-      var match = line.match(opts.includeRegexp);
+    src = grunt.file.read(p).split(grunt.util.linefeed);
+    compiled = src.map(function(line) {
+      match = line.match(opts.includeRegexp);
 
       if(match) {
-        var f = path.join(path.dirname(p), match[opts.pos]);
-        line = recurse(f, opts, included);
-        if (opts.debug) {
-          var msg_begin = 'File: ' + f;
-          var msg_end = 'EOF: ' + f;
+        next = path.join(path.dirname(p), match[1]);
+        line = recurse(next, opts, included);
+
+        if(opts.debug) {
+          var msg_begin = 'File: ' + next;
+          var msg_end = 'EOF: ' + next;
           line = comment.replace('%s', msg_begin) + '\n' + line + '\n'; 
           line = line + comment.replace('%s', msg_end); 
         }
