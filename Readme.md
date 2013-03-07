@@ -12,33 +12,48 @@ Then add this line to your project's `Gruntfile.js`:
 grunt.loadNpmTasks('grunt-includes');
 ```
 
+## Options
+#### includeRegexp
+Type: `RegExp`
+
+Sets the regular expression used to find *include* statements. The file path should always be the `$1`.
+
+#### duplicates
+Type: `boolean`
+Default: `true`
+
+Permits the same file to be included twice.
+
+#### debug
+Type: `boolean`
+Default: `false`
+
+Enables debug mode compilation.
+
 ## Usage
 
 You can use this plugin to build html templates.
 
 ```javascript
 includes: {
-   files: {
-     src: ['path/to/foo.html', 'path/to/bar.html'], // Source files
-     dest: 'tmp' // Destination directory
-   }
+  files: {
+    src: ['path/to/foo.html', 'path/to/bar.html'], // Source files
+    dest: 'tmp', // Destination directory
+    flatten: true,
+    cwd: '.'
+  }
 }
 ```
 
-Or even organize you static files.
+Or even organize your static files.
 
 ```javascript
 includes: {
-  options: {
-    regex: /^(\s*)include\s+"(\S+)"\s*$/,
-    pos: 2, // the regex matched result group position
-  },
   js: {
     options: {
-      regex: /^\/\/(\s*)import\s+['"]?([^'"]+)['"]?\s*$/,
-      pos: 2,
-      nodup: false, // no duplicate files, that means already included files will not be imported again
-      debug: process.env.DEBUG, // output comment line for debug
+      includeRegexp: /^\/\/\s*import\s+['"]?([^'"]+)['"]?\s*$/,
+      duplicates: false,
+      debug: true
     },
     files: {
       cwd: 'assets/js/',
@@ -90,7 +105,7 @@ watch: {
 ```
 
 ## Release History
-- 0.2.0 - Support for expandable path
+- 0.2.0 - Support for expandable paths and debugging. Thanks [@ktmud](https://github.com/ktmud)!
 - 0.1.0 - Updated for grunt 0.4
 - 0.0.1 - Initial release
 
