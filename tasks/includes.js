@@ -18,7 +18,7 @@ module.exports = function(grunt) {
    * Regex for parsing includes
    */
 
-  var defaultRegexp = /^(\s*)include\s+"(\S+)"\s*$/; 
+  var defaultRegexp = /^\s*include\s+"(\S+)"\s*$/;
 
   /**
    * Core `grunt-includes` task
@@ -26,6 +26,11 @@ module.exports = function(grunt) {
    */
 
   grunt.registerMultiTask('includes', 'Include other files within files.', function() {
+
+    /**
+     * Default options
+     */
+
     var opts = this.options({
       debug: false,
       duplicates: true,
@@ -33,9 +38,13 @@ module.exports = function(grunt) {
     });
 
     this.files.forEach(function(f) {
-      var cwd = f.cwd;
-      var src = f.src.filter(function(p) {
-        p = cwd ? path.join(cwd, p) : p;
+      var src, cwd = f.cwd;
+
+      src = f.src.filter(function(p) {
+        if(cwd) {
+          p = path.join(f.cwd, p);
+        }
+
         if(grunt.file.exists(p)) {
           return true;
         } else {
@@ -52,12 +61,14 @@ module.exports = function(grunt) {
         var fileName = f.flatten ? path.basename(p) : p;
         var outFile = grunt.file.isFile(f.dest) ? f.dest : path.join(f.dest, fileName);
 
-        p = cwd ? path.join(cwd, p) : p;
+        if(cwd) {
+          p = path.join(cwd, p);
+        }
 
         grunt.file.write(outFile, recurse(p, opts));
         grunt.log.oklns('Saved ' + outFile);
       });
-      
+
     });
   });
 
@@ -99,9 +110,14 @@ module.exports = function(grunt) {
       return 'Error including "' + p + '".';
     }
 
-    if(opts.duplicates && ~included.indexOf(p)) {
+    /**
+     * If `opts.duplicates` is false and file has been included,
+     * error
+     */
+
+    if(!opts.duplicates && ~included.indexOf(p)) {
       error = 'Duplicate include: ' + p + ' skipping.';
-      grunt.log.debug(error);
+      grunt.log.error(error);
 
       if(opts.debug) {
         return comment.replace(/%s/g, error);
@@ -110,21 +126,43 @@ module.exports = function(grunt) {
       }
     }
 
+    /**
+     * At this point the file is considered included
+     */
+
+    included.push(p);
+
+    /**
+     * Split the file on newlines
+     */
+
     src = grunt.file.read(p).split(grunt.util.linefeed);
+
+    /**
+     * Loop through the file calling `recurse` if an include is found
+     */
+
     compiled = src.map(function(line) {
       match = line.match(opts.includeRegexp);
+
+      /**
+       * If the line has an include statement, recurse
+       */
 
       if(match) {
         next = path.join(path.dirname(p), match[1]);
         line = recurse(next, opts, included);
 
+        /**
+         * Include debug comments if `opts.debug`
+         */
+
         if(opts.debug) {
-          var msg_begin = 'File: ' + next;
-          var msg_end = 'EOF: ' + next;
-          line = comment.replace('%s', msg_begin) + '\n' + line + '\n'; 
-          line = line + comment.replace('%s', msg_end); 
+          line = comment.replace(/%s/g, 'Begin: ' + next) +
+                 '\n' + line + '\n' + comment.replace(/%s/g, 'End: ' + next);
         }
       }
+
       return line;
     });
 
