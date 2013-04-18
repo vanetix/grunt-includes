@@ -21,6 +21,11 @@ module.exports = function(grunt) {
   var defaultRegexp = /^\s*include\s+"(\S+)"\s*$/;
 
   /**
+   * Regex for matching new lines
+   */
+  var newlineRegexp = /\r\n|\n/g;
+
+  /**
    * Core `grunt-includes` task
    * Iterates over all source files and calls `recurse(path)` on each
    */
@@ -93,6 +98,19 @@ module.exports = function(grunt) {
   }
 
   /**
+   * Returns the new line style for file `p`
+   *
+   * @param {String} p
+   * @return {String}
+   */
+
+  function newlineStyle(p) {
+    var matches = grunt.file.read(p).match(newlineRegexp);
+
+    return matches[0] || grunt.util.linefeed;
+  }
+
+  /**
    * Helper for `includes` builds all includes for `p`
    *
    * @param {String} p
@@ -100,9 +118,10 @@ module.exports = function(grunt) {
    */
 
   function recurse(p, opts, included) {
-    var src, next, match, error, comment, compiled;
+    var src, next, match, error, comment, newline, compiled;
 
     comment = commentStyle(p);
+    newline = newlineStyle(p);
     included = included || [];
 
     if(!grunt.file.isFile(p)) {
@@ -136,7 +155,7 @@ module.exports = function(grunt) {
      * Split the file on newlines
      */
 
-    src = grunt.file.read(p).split(grunt.util.linefeed);
+    src = grunt.file.read(p).split(newline);
 
     /**
      * Loop through the file calling `recurse` if an include is found
@@ -159,14 +178,14 @@ module.exports = function(grunt) {
 
         if(opts.debug) {
           line = comment.replace(/%s/g, 'Begin: ' + next) +
-                 '\n' + line + '\n' + comment.replace(/%s/g, 'End: ' + next);
+                 newline + line + newline + comment.replace(/%s/g, 'End: ' + next);
         }
       }
 
       return line;
     });
 
-    return  compiled.join(grunt.util.linefeed);
+    return  compiled.join(newline);
   }
 
 };

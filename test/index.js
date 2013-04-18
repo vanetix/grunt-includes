@@ -4,7 +4,7 @@ exports.includes = {
   cases: function(test) {
     var expect, result;
     
-    test.expect(3);
+    test.expect(4);
 
     expect = grunt.file.read("test/expected/simple.html");
     result = grunt.file.read("tmp/cases/simple.html");
@@ -15,6 +15,10 @@ exports.includes = {
     expect = grunt.file.read("test/expected/complex.html");
     result = grunt.file.read("tmp/flatten/complex.html");
     test.equal(expect, result, "should satisfy flatten");
+
+    expect = grunt.file.read("test/expected/simple_windows.html");
+    result = grunt.file.read("tmp/cases/simple_windows.html");
+    test.equal(expect, result, "should satisfy simple windows case");
 
     test.done();
   }
