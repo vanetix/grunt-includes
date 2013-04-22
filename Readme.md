@@ -105,6 +105,7 @@ watch: {
 ```
 
 ## Release History
+- 0.2.3 - Fix bug when building source files from a different platform. Thanks [wGEric](https://github.com/wGEric)!
 - 0.2.0 - Support for expandable paths and debugging. Thanks [@ktmud](https://github.com/ktmud)!
 - 0.1.0 - Updated for grunt 0.4
 - 0.0.1 - Initial release
