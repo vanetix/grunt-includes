@@ -23,7 +23,8 @@ module.exports = function(grunt) {
   /**
    * Regex for matching new lines
    */
-  var newlineRegexp = /\r\n|\n/g;
+
+  var newlineRegexp = /\r?\n/g;
 
   /**
    * Core `grunt-includes` task
