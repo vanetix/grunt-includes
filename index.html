@@ -1,0 +1,174 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Grunt-includes by vanetix</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/vanetix/grunt-includes">View On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/vanetix/grunt-includes/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/vanetix/grunt-includes/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Grunt-includes</h1>
+          <p>include content from other files</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/vanetix">vanetix</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>grunt-includes <a href="https://travis-ci.org/vanetix/grunt-includes"><img src="https://travis-ci.org/vanetix/grunt-includes.png?branch=master" alt="Build Status"></a>
+</h1>
+
+<p><strong><em>Requires grunt ~0.4.0</em></strong></p>
+
+<p>A grunt task for including a file within another file (think php includes). <em>Circular</em> imports will break the recursive strategy.</p>
+
+<h2>Getting Started</h2>
+
+<p>Install this grunt plugin next to your project's <em>Gruntfile.js</em> with: <code>npm install grunt-includes --save-dev</code></p>
+
+<p>Then add this line to your project's <code>Gruntfile.js</code>:</p>
+
+<div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">'grunt-includes'</span><span class="p">);</span>
+</pre></div>
+
+<h2>Options</h2>
+
+<h4>includeRegexp</h4>
+
+<p>Type: <code>RegExp</code></p>
+
+<p>Sets the regular expression used to find <em>include</em> statements. The file path should always be the <code>$1</code>.</p>
+
+<h4>duplicates</h4>
+
+<p>Type: <code>boolean</code>
+Default: <code>true</code></p>
+
+<p>Permits the same file to be included twice.</p>
+
+<h4>debug</h4>
+
+<p>Type: <code>boolean</code>
+Default: <code>false</code></p>
+
+<p>Enables debug mode compilation.</p>
+
+<h2>Usage</h2>
+
+<p>You can use this plugin to build html templates.</p>
+
+<div class="highlight"><pre><span class="nx">includes</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">src</span><span class="o">:</span> <span class="p">[</span><span class="s1">'path/to/foo.html'</span><span class="p">,</span> <span class="s1">'path/to/bar.html'</span><span class="p">],</span> <span class="c1">// Source files</span>
+    <span class="nx">dest</span><span class="o">:</span> <span class="s1">'tmp'</span><span class="p">,</span> <span class="c1">// Destination directory</span>
+    <span class="nx">flatten</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">cwd</span><span class="o">:</span> <span class="s1">'.'</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>Or even organize your static files.</p>
+
+<div class="highlight"><pre><span class="nx">includes</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">js</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">includeRegexp</span><span class="o">:</span> <span class="sr">/^\/\/\s*import\s+['"]?([^'"]+)['"]?\s*$/</span><span class="p">,</span>
+      <span class="nx">duplicates</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="nx">debug</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">},</span>
+    <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">cwd</span><span class="o">:</span> <span class="s1">'assets/js/'</span><span class="p">,</span>
+      <span class="nx">src</span><span class="o">:</span> <span class="s1">'**/*.js'</span><span class="p">,</span>
+      <span class="nx">dest</span><span class="o">:</span> <span class="s1">'assets/dist/js/'</span><span class="p">,</span>
+    <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">},</span>
+<span class="nx">watch</span><span class="o">:</span> <span class="p">{</span>
+  <span class="nx">js</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">files</span><span class="o">:</span> <span class="p">[</span><span class="s1">'assets/js/**/*.js'</span><span class="p">],</span>
+    <span class="nx">tasks</span><span class="o">:</span> <span class="p">[</span><span class="s1">'includes:js'</span><span class="p">,</span> <span class="s1">'jshint'</span><span class="p">]</span>
+  <span class="p">},</span> 
+<span class="p">},</span>
+</pre></div>
+
+<h2>Example</h2>
+
+<p><em>index.html</em></p>
+
+<div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Show me<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+  include "content.html"
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+
+<p><em>content.html</em></p>
+
+<div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>Content<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;p&gt;</span>More content<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+
+<p><strong>Produces</strong></p>
+
+<div class="highlight"><pre><span class="nt">&lt;html&gt;</span>
+<span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Show me<span class="nt">&lt;/title&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+<span class="nt">&lt;body&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>Content<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;p&gt;</span>More content<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span> 
+<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span>
+</pre></div>
+
+<h2>Release History</h2>
+
+<ul>
+<li>0.2.3 - Fix bug when building source files from a different platform. Thanks <a href="https://github.com/wGEric">wGEric</a>!</li>
+<li>0.2.0 - Support for expandable paths and debugging. Thanks <a href="https://github.com/ktmud">@ktmud</a>!</li>
+<li>0.1.0 - Updated for grunt 0.4</li>
+<li>0.0.1 - Initial release</li>
+</ul><h2>License (MIT)</h2>
+
+<p>Copyright (c) 2013 Matt McFarland  </p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+    
+  </body>
+</html>
