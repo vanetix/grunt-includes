@@ -108,7 +108,7 @@ module.exports = function(grunt) {
   function newlineStyle(p) {
     var matches = grunt.file.read(p).match(newlineRegexp);
 
-    return matches[0] || grunt.util.linefeed;
+    return (matches && matches[0]) || grunt.util.linefeed;
   }
 
   /**
