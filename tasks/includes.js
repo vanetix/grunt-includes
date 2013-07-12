@@ -56,7 +56,7 @@ module.exports = function(grunt) {
           p = path.join(f.cwd, p);
         }
 
-        if(grunt.file.exists(p)) {
+        if(grunt.file.isFile(p)) {
           return true;
         } else {
           grunt.log.warn('Source file "' + p + '" not found.');
@@ -64,13 +64,13 @@ module.exports = function(grunt) {
         }
       });
 
-      if(src.length > 1 && grunt.file.isFile(f.dest)) {
+      if(src.length > 1 && isFilename(f.dest)) {
         grunt.log.warn('Source file cannot be more than one when dest is a file.');
       }
 
       src.forEach(function(p) {
         var fileName = f.flatten ? path.basename(p) : p;
-        var outFile = grunt.file.isFile(f.dest) ? f.dest : path.join(f.dest, fileName);
+        var outFile = isFilename(f.dest) ? f.dest : path.join(f.dest, fileName);
 
         if(cwd) {
           p = path.join(cwd, p);
@@ -82,6 +82,17 @@ module.exports = function(grunt) {
 
     });
   });
+
+  /**
+   * Checks if `p` is a filepath, being it has an extension.
+   *
+   * @param {String} p
+   * @return {Boolean}
+   */
+
+  function isFilename(p) {
+    return !!path.extname(p);
+  }
 
   /**
    * Returns the comment style for file `p`
