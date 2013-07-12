@@ -13,22 +13,29 @@ grunt.loadNpmTasks('grunt-includes');
 ```
 
 ## Options
-#### includeRegexp
-Type: `RegExp`
 
-Sets the regular expression used to find *include* statements. The file path should always be the `$1`.
+#### banner
+Type: `String`
+Default: `''`
+
+String processed by `grunt.template.process`, and prepended to every compiled file.
 
 #### duplicates
-Type: `boolean`
+Type: `Boolean`
 Default: `true`
 
 Permits the same file to be included twice.
 
 #### debug
-Type: `boolean`
+Type: `Boolean`
 Default: `false`
 
 Enables debug mode compilation.
+
+#### includeRegexp
+Type: `RegExp`
+
+Sets the regular expression used to find *include* statements. The file path should always be the `$1`.
 
 ## Usage
 
@@ -41,6 +48,9 @@ includes: {
     dest: 'tmp', // Destination directory
     flatten: true,
     cwd: '.'
+    options: {
+      banner: '<!-- I am a banner <% includes.files.dest %> -->'
+    }
   }
 }
 ```
@@ -66,7 +76,7 @@ watch: {
   js: {
     files: ['assets/js/**/*.js'],
     tasks: ['includes:js', 'jshint']
-  }, 
+  },
 },
 ```
 
@@ -99,7 +109,7 @@ watch: {
 <div class="content">
   <h1>Content</h1>
   <p>More content</p>
-</div> 
+</div>
 </body>
 </html>
 ```
@@ -111,7 +121,7 @@ watch: {
 - 0.0.1 - Initial release
 
 ## License (MIT)
-Copyright (c) 2013 Matt McFarland  
+Copyright (c) 2012-2013 Matt McFarland
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 

@@ -32,6 +32,7 @@ module.exports = function(grunt) {
    */
 
   grunt.registerMultiTask('includes', 'Include other files within files.', function() {
+    var banner;
 
     /**
      * Default options
@@ -39,9 +40,13 @@ module.exports = function(grunt) {
 
     var opts = this.options({
       debug: false,
+      banner: '',
       duplicates: true,
       includeRegexp: defaultRegexp
     });
+
+    // Render banner
+    banner = grunt.template.process(opts.banner);
 
     this.files.forEach(function(f) {
       var src, cwd = f.cwd;
@@ -71,7 +76,7 @@ module.exports = function(grunt) {
           p = path.join(cwd, p);
         }
 
-        grunt.file.write(outFile, recurse(p, opts));
+        grunt.file.write(outFile, banner + recurse(p, opts));
         grunt.log.oklns('Saved ' + outFile);
       });
 

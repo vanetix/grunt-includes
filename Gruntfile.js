@@ -37,13 +37,18 @@ module.exports = function(grunt) {
         flatten: true,
         src: ['test/cases/complex.html'],
         dest: 'tmp/flatten'
+      },
+      banner: {
+        src: ['test/cases/complex.html'],
+        dest: 'tmp/banner/banner.html',
+        options: { banner: '/* banner test */\n'}
       }
     }
   });
 
   // Load this task
   grunt.loadTasks('tasks');
-  
+
   // Load plugins used by this task gruntfile
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
