@@ -1,7 +1,7 @@
 # grunt-includes [![Build Status](https://travis-ci.org/vanetix/grunt-includes.png?branch=master)](https://travis-ci.org/vanetix/grunt-includes)
 ***Requires grunt ~0.4.0***
 
-A grunt task for including a file within another file (think php includes). *Circular* imports will break the recursive strategy.
+A grunt task for including a file within another file (think php includes). *Circular* imports will break the recursive strategy. *All includes retain parent and child indentation*
 
 ## Getting Started
 Install this grunt plugin next to your project's *Gruntfile.js* with: `npm install grunt-includes --save-dev`
@@ -106,15 +106,16 @@ watch: {
   <title>Show me</title>
 </head>
 <body>
-<div class="content">
-  <h1>Content</h1>
-  <p>More content</p>
-</div>
+  <div class="content">
+    <h1>Content</h1>
+    <p>More content</p>
+  </div>
 </body>
 </html>
 ```
 
 ## Release History
+- 0.3.0 - Add indention preservation and banner support
 - 0.2.3 - Fix bug when building source files from a different platform. Thanks [wGEric](https://github.com/wGEric)!
 - 0.2.0 - Support for expandable paths and debugging. Thanks [@ktmud](https://github.com/ktmud)!
 - 0.1.0 - Updated for grunt 0.4
