@@ -35,11 +35,11 @@ module.exports = function(grunt) {
       },
       flatten: {
         flatten: true,
-        src: ['test/cases/complex.html'],
+        src: ['test/cases/simple.html'],
         dest: 'tmp/flatten'
       },
       banner: {
-        src: ['test/cases/complex.html'],
+        src: ['test/cases/simple.html'],
         dest: 'tmp/banner/banner.html',
         options: { banner: '/* banner test */\n'}
       }

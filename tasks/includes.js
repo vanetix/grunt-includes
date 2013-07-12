@@ -18,7 +18,7 @@ module.exports = function(grunt) {
    * Regex for parsing includes
    */
 
-  var defaultRegexp = /^\s*include\s+"(\S+)"\s*$/;
+  var defaultRegexp = /^(\s*)include\s+"(\S+)"\s*$/;
 
   /**
    * Regex for matching new lines
@@ -134,9 +134,10 @@ module.exports = function(grunt) {
    * @return {String}
    */
 
-  function recurse(p, opts, included) {
+  function recurse(p, opts, included, indents) {
     var src, next, match, error, comment, newline, compiled;
 
+    indents = indents || '';
     comment = commentStyle(p);
     newline = newlineStyle(p);
     included = included || [];
@@ -186,8 +187,8 @@ module.exports = function(grunt) {
        */
 
       if(match) {
-        next = path.join(path.dirname(p), match[1]);
-        line = recurse(next, opts, included);
+        next = path.join(path.dirname(p), match[2]);
+        line = recurse(next, opts, included, indents + match[1]);
 
         /**
          * Include debug comments if `opts.debug`
@@ -199,7 +200,8 @@ module.exports = function(grunt) {
         }
       }
 
-      return line;
+      // If there are indents and not a match, add them to the line
+      return line && indents && !match ? indents + line : line;
     });
 
     return  compiled.join(newline);
