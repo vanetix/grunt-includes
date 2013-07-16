@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Grunt-includes by vanetix</title>
+    <title>grunt-includes by vanetix</title>
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -31,21 +31,23 @@
 
       <section>
         <div id="title">
-          <h1>Grunt-includes</h1>
-          <p>include content from other files</p>
+          <h1>grunt-includes</h1>
+          <p>Include content from other files</p>
           <hr>
           <span class="credits left">Project maintained by <a href="https://github.com/vanetix">vanetix</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
         </div>
 
-        <h1>grunt-includes <a href="https://travis-ci.org/vanetix/grunt-includes"><img src="https://travis-ci.org/vanetix/grunt-includes.png?branch=master" alt="Build Status"></a>
+        <h1>
+<a name="grunt-includes-" class="anchor" href="#grunt-includes-"><span class="octicon octicon-link"></span></a>grunt-includes <a href="https://travis-ci.org/vanetix/grunt-includes"><img src="https://travis-ci.org/vanetix/grunt-includes.png?branch=master" alt="Build Status"></a>
 </h1>
 
 <p><strong><em>Requires grunt ~0.4.0</em></strong></p>
 
-<p>A grunt task for including a file within another file (think php includes). <em>Circular</em> imports will break the recursive strategy.</p>
+<p>A grunt task for including a file within another file (think php includes). <em>Circular</em> imports will break the recursive strategy. <em>All includes retain parent and child indentation</em></p>
 
-<h2>Getting Started</h2>
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
 
 <p>Install this grunt plugin next to your project's <em>Gruntfile.js</em> with: <code>npm install grunt-includes --save-dev</code></p>
 
@@ -54,29 +56,42 @@
 <div class="highlight"><pre><span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">'grunt-includes'</span><span class="p">);</span>
 </pre></div>
 
-<h2>Options</h2>
+<h2>
+<a name="options" class="anchor" href="#options"><span class="octicon octicon-link"></span></a>Options</h2>
 
-<h4>includeRegexp</h4>
+<h4>
+<a name="banner" class="anchor" href="#banner"><span class="octicon octicon-link"></span></a>banner</h4>
+
+<p>Type: <code>String</code>
+Default: <code>''</code></p>
+
+<p>String processed by <code>grunt.template.process</code>, and prepended to every compiled file.</p>
+
+<h4>
+<a name="duplicates" class="anchor" href="#duplicates"><span class="octicon octicon-link"></span></a>duplicates</h4>
+
+<p>Type: <code>Boolean</code>
+Default: <code>true</code></p>
+
+<p>Permits the same file to be included twice.</p>
+
+<h4>
+<a name="debug" class="anchor" href="#debug"><span class="octicon octicon-link"></span></a>debug</h4>
+
+<p>Type: <code>Boolean</code>
+Default: <code>false</code></p>
+
+<p>Enables debug mode compilation.</p>
+
+<h4>
+<a name="includeregexp" class="anchor" href="#includeregexp"><span class="octicon octicon-link"></span></a>includeRegexp</h4>
 
 <p>Type: <code>RegExp</code></p>
 
 <p>Sets the regular expression used to find <em>include</em> statements. The file path should always be the <code>$1</code>.</p>
 
-<h4>duplicates</h4>
-
-<p>Type: <code>boolean</code>
-Default: <code>true</code></p>
-
-<p>Permits the same file to be included twice.</p>
-
-<h4>debug</h4>
-
-<p>Type: <code>boolean</code>
-Default: <code>false</code></p>
-
-<p>Enables debug mode compilation.</p>
-
-<h2>Usage</h2>
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <p>You can use this plugin to build html templates.</p>
 
@@ -86,6 +101,9 @@ Default: <code>false</code></p>
     <span class="nx">dest</span><span class="o">:</span> <span class="s1">'tmp'</span><span class="p">,</span> <span class="c1">// Destination directory</span>
     <span class="nx">flatten</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
     <span class="nx">cwd</span><span class="o">:</span> <span class="s1">'.'</span>
+    <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">banner</span><span class="o">:</span> <span class="s1">'&lt;!-- I am a banner &lt;% includes.files.dest %&gt; --&gt;'</span>
+    <span class="p">}</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -110,11 +128,12 @@ Default: <code>false</code></p>
   <span class="nx">js</span><span class="o">:</span> <span class="p">{</span>
     <span class="nx">files</span><span class="o">:</span> <span class="p">[</span><span class="s1">'assets/js/**/*.js'</span><span class="p">],</span>
     <span class="nx">tasks</span><span class="o">:</span> <span class="p">[</span><span class="s1">'includes:js'</span><span class="p">,</span> <span class="s1">'jshint'</span><span class="p">]</span>
-  <span class="p">},</span> 
+  <span class="p">},</span>
 <span class="p">},</span>
 </pre></div>
 
-<h2>Example</h2>
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
 
 <p><em>index.html</em></p>
 
@@ -143,24 +162,27 @@ Default: <code>false</code></p>
   <span class="nt">&lt;title&gt;</span>Show me<span class="nt">&lt;/title&gt;</span>
 <span class="nt">&lt;/head&gt;</span>
 <span class="nt">&lt;body&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;h1&gt;</span>Content<span class="nt">&lt;/h1&gt;</span>
-  <span class="nt">&lt;p&gt;</span>More content<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;/div&gt;</span> 
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"content"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Content<span class="nt">&lt;/h1&gt;</span>
+    <span class="nt">&lt;p&gt;</span>More content<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
 </pre></div>
 
-<h2>Release History</h2>
+<h2>
+<a name="release-history" class="anchor" href="#release-history"><span class="octicon octicon-link"></span></a>Release History</h2>
 
 <ul>
+<li>0.3.0 - Add indention preservation and banner support</li>
 <li>0.2.3 - Fix bug when building source files from a different platform. Thanks <a href="https://github.com/wGEric">wGEric</a>!</li>
 <li>0.2.0 - Support for expandable paths and debugging. Thanks <a href="https://github.com/ktmud">@ktmud</a>!</li>
 <li>0.1.0 - Updated for grunt 0.4</li>
 <li>0.0.1 - Initial release</li>
-</ul><h2>License (MIT)</h2>
+</ul><h2>
+<a name="license-mit" class="anchor" href="#license-mit"><span class="octicon octicon-link"></span></a>License (MIT)</h2>
 
-<p>Copyright (c) 2013 Matt McFarland  </p>
+<p>Copyright (c) 2012-2013 Matt McFarland</p>
 
 <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions: The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
 
