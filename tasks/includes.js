@@ -135,7 +135,7 @@ module.exports = function(grunt) {
    */
 
   function recurse(p, opts, included, indents) {
-    var src, next, match, error, comment, newline, compiled;
+    var src, next, match, error, comment, newline, compiled, indent, fileLocation;
 
     indents = indents || '';
     comment = commentStyle(p);
@@ -187,8 +187,16 @@ module.exports = function(grunt) {
        */
 
       if(match) {
-        next = path.join(path.dirname(p), match[2]);
-        line = recurse(next, opts, included, indents + match[1]);
+        fileLocation = match[2];
+        indent = match[1];
+
+        if (!fileLocation) {
+          fileLocation = indent;
+          indent = '';
+        }
+
+        next = path.join(path.dirname(p), fileLocation);
+        line = recurse(next, opts, included, indents + indent);
 
         /**
          * Include debug comments if `opts.debug`
