@@ -34,8 +34,17 @@ Enables debug mode compilation.
 
 #### includeRegexp
 Type: `RegExp`
+Default: `/^(\s*)include\s+"(\S+)"\s*$/`
+Matches: `include "some/file.html"`
 
-Sets the regular expression used to find *include* statements. The file path should always be the `$1`.
+Sets the regular expression used to find *include* statements.
+
+A regex group is used to identify the important parts of the include statement.  When constructing your own regex, it can contain up to two groups (denoted by parentheses `()` in the regular expression):
+
+ 1. The indentation whitespace to be appended to the front of the included file's contents
+ 2. The file location
+
+**All regular expressions used must contain at least one group.**  If only one group is used, it will be assumed to contain the file path.
 
 ## Usage
 
