@@ -86,9 +86,18 @@ Default: <code>false</code></p>
 <h4>
 <a name="includeregexp" class="anchor" href="#includeregexp"><span class="octicon octicon-link"></span></a>includeRegexp</h4>
 
-<p>Type: <code>RegExp</code></p>
+<p>Type: <code>RegExp</code>
+Default: <code>/^(\s*)include\s+"(\S+)"\s*$/</code>
+Matches: <code>include "some/file.html"</code></p>
 
-<p>Sets the regular expression used to find <em>include</em> statements. The file path should always be the <code>$1</code>.</p>
+<p>Sets the regular expression used to find <em>include</em> statements.</p>
+
+<p>A regex group is used to identify the important parts of the include statement.  When constructing your own regex, it can contain up to two groups (denoted by parentheses <code>()</code> in the regular expression):</p>
+
+<ol>
+<li>The indentation whitespace to be appended to the front of the included file's contents</li>
+<li>The file location</li>
+</ol><p><strong>All regular expressions used must contain at least one group.</strong>  If only one group is used, it will be assumed to contain the file path.</p>
 
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
