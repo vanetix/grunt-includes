@@ -46,6 +46,12 @@ A regex group is used to identify the important parts of the include statement. 
 
 **All regular expressions used must contain at least one group.**  If only one group is used, it will be assumed to contain the file path.
 
+#### displaySavedFileMsg
+Type: `Boolean`
+Default: 'true'
+
+Enables or disables the 'Saved {file name and path}' message on success.
+
 ## Usage
 
 You can use this plugin to build html templates.
@@ -124,6 +130,7 @@ watch: {
 ```
 
 ## Release History
+- 0.3.1 - Add flag to turn off 'Saved {file name}' message.
 - 0.3.0 - Add indention preservation and banner support
 - 0.2.3 - Fix bug when building source files from a different platform. Thanks [wGEric](https://github.com/wGEric)!
 - 0.2.0 - Support for expandable paths and debugging. Thanks [@ktmud](https://github.com/ktmud)!
