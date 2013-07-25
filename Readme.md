@@ -32,6 +32,12 @@ Default: `false`
 
 Enables debug mode compilation.
 
+#### silent
+Type: `Boolean`
+Default: `false`
+
+Silences file save success messages.
+
 #### includeRegexp
 Type: `RegExp`
 Default: `/^(\s*)include\s+"(\S+)"\s*$/`
@@ -46,12 +52,6 @@ A regex group is used to identify the important parts of the include statement. 
 
 **All regular expressions used must contain at least one group.**  If only one group is used, it will be assumed to contain the file path.
 
-#### displaySavedFileMsg
-Type: `Boolean`
-Default: 'true'
-
-Enables or disables the 'Saved {file name and path}' message on success.
-
 ## Usage
 
 You can use this plugin to build html templates.
@@ -64,6 +64,7 @@ includes: {
     flatten: true,
     cwd: '.'
     options: {
+      silent: true,
       banner: '<!-- I am a banner <% includes.files.dest %> -->'
     }
   }
