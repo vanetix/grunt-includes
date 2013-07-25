@@ -12,6 +12,8 @@ Then add this line to your project's `Gruntfile.js`:
 grunt.loadNpmTasks('grunt-includes');
 ```
 
+An example site can be found at [grunt-includes-example](https://github.com/vanetix/grunt-includes-example).
+
 ## Options
 
 #### banner
