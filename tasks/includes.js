@@ -77,11 +77,11 @@ module.exports = function(grunt) {
           p = path.join(cwd, p);
         }
 
+        grunt.file.write(outFile, banner + recurse(p, opts));
+
         if(!opts.silent) {
           grunt.log.oklns('Saved ' + outFile);
         }
-
-        grunt.file.write(outFile, banner + recurse(p, opts));
       });
 
     });
