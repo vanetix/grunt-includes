@@ -41,14 +41,13 @@ module.exports = function(grunt) {
     var opts = this.options({
       debug: false,
       banner: '',
+      silent: false,
       duplicates: true,
-      includeRegexp: defaultRegexp,
-      displaySavedFileMsg: true
+      includeRegexp: defaultRegexp
     });
 
     // Render banner
     banner = grunt.template.process(opts.banner);
-    var displaySavedFileMsg = opts.displaySavedFileMsg;
 
     this.files.forEach(function(f) {
       var src, cwd = f.cwd;
@@ -78,10 +77,11 @@ module.exports = function(grunt) {
           p = path.join(cwd, p);
         }
 
-        grunt.file.write(outFile, banner + recurse(p, opts));
-        if (displaySavedFileMsg) {
+        if(!opts.silent) {
           grunt.log.oklns('Saved ' + outFile);
         }
+
+        grunt.file.write(outFile, banner + recurse(p, opts));
       });
 
     });
