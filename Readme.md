@@ -45,6 +45,13 @@ Type: `RegExp`
 Default: `/^(\s*)include\s+"(\S+)"\s*$/`
 Matches: `include "some/file.html"`
 
+#### includePath
+Type: `String`
+Default: ``
+
+Indicates the path to use when looking for included files. Instead of using relative path in the include statements, use includePath as base directory.
+
+
 Sets the regular expression used to find *include* statements.
 
 A regex group is used to identify the important parts of the include statement.  When constructing your own regex, it can contain up to two groups (denoted by parentheses `()` in the regular expression):

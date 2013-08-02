@@ -4,7 +4,7 @@ exports.includes = {
   cases: function(test) {
     var expect, result;
 
-    test.expect(6);
+    test.expect(7);
 
     expect = grunt.file.read("test/expected/simple.html");
     result = grunt.file.read("tmp/cases/simple.html");
@@ -29,6 +29,10 @@ exports.includes = {
     expect = grunt.file.read("test/expected/banner.html");
     result = grunt.file.read("tmp/banner/banner.html");
     test.equal(expect, result, "should prepend the supplied banner");
+
+    expect = grunt.file.read("test/expected/includePath_simple.html");
+    result = grunt.file.read("/tmp/includePath/simple.html");
+    test.equal(expect, result, "should use header footer from baseInclude dir");
 
     test.done();
   }
