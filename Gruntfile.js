@@ -42,6 +42,11 @@ module.exports = function(grunt) {
         src: ['test/cases/simple.html'],
         dest: 'tmp/banner/banner.html',
         options: { banner: '/* banner test */\n'}
+      },
+      includePath: {
+        src: ['test/cases/simple.html'],
+        dest: '/tmp/includePath/simple.html',
+        options: {includePath: 'test/templates'}
       }
     }
   });
