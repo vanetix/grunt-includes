@@ -43,7 +43,8 @@ module.exports = function(grunt) {
       banner: '',
       silent: false,
       duplicates: true,
-      includeRegexp: defaultRegexp
+      includeRegexp: defaultRegexp,
+      includePath: ''
     });
 
     // Render banner
@@ -199,7 +200,13 @@ module.exports = function(grunt) {
           indent = '';
         }
 
-        next = path.join(path.dirname(p), fileLocation);
+        var pathToJoin = path.dirname(p);
+
+        if(opts.includePath !== '') {
+              pathToJoin = opts.includePath;
+        }
+        next = path.join(pathToJoin, fileLocation);
+
         line = recurse(next, opts, included, indents + indent);
 
         /**
