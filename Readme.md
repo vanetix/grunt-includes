@@ -139,6 +139,7 @@ watch: {
 ```
 
 ## Release History
+- 0.3.4 - Add explicit include path option.
 - 0.3.2 - Add silent flag to silence save messages.
 - 0.3.0 - Add indention preservation and banner support
 - 0.2.3 - Fix bug when building source files from a different platform. Thanks [wGEric](https://github.com/wGEric)!
