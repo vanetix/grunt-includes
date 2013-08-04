@@ -30,9 +30,9 @@ exports.includes = {
     result = grunt.file.read("tmp/banner/banner.html");
     test.equal(expect, result, "should prepend the supplied banner");
 
-    expect = grunt.file.read("test/expected/includePath_simple.html");
-    result = grunt.file.read("/tmp/includePath/simple.html");
-    test.equal(expect, result, "should use header footer from baseInclude dir");
+    expect = grunt.file.read("test/expected/include_path.html");
+    result = grunt.file.read("tmp/include_path/simple.html");
+    test.equal(expect, result, "should use header and footer from includes directory");
 
     test.done();
   }

@@ -201,13 +201,7 @@ module.exports = function(grunt) {
           indent = '';
         }
 
-        var pathToJoin = path.dirname(p);
-
-        if(opts.includePath !== '') {
-              pathToJoin = opts.includePath;
-        }
-        next = path.join(pathToJoin, fileLocation);
-
+        next = path.join((opts.includePath || path.dirname(p)), fileLocation);
         line = recurse(next, opts, included, indents + indent);
 
         /**

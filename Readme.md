@@ -40,17 +40,16 @@ Default: `false`
 
 Silences file save success messages.
 
-#### includeRegexp
-Type: `RegExp`
-Default: `/^(\s*)include\s+"(\S+)"\s*$/`
-Matches: `include "some/file.html"`
-
 #### includePath
 Type: `String`
 Default: ``
 
 Indicates the path to use when looking for included files. Instead of using relative path in the include statements, use includePath as base directory.
 
+#### includeRegexp
+Type: `RegExp`
+Default: `/^(\s*)include\s+"(\S+)"\s*$/`
+Matches: `include "some/file.html"`
 
 Sets the regular expression used to find *include* statements.
 
