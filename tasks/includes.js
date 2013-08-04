@@ -140,17 +140,18 @@ module.exports = function(grunt) {
    */
 
   function recurse(p, opts, included, indents) {
-    var src, next, match, error, comment, newline, compiled, indent, fileLocation;
-
-    indents = indents || '';
-    comment = commentStyle(p);
-    newline = newlineStyle(p);
-    included = included || [];
+    var src, next, match, error, comment,
+        newline, compiled, indent, fileLocation;
 
     if(!grunt.file.isFile(p)) {
       grunt.log.warn('Included file "' + p + '" not found.');
       return 'Error including "' + p + '".';
     }
+
+    indents = indents || '';
+    comment = commentStyle(p);
+    newline = newlineStyle(p);
+    included = included || [];
 
     /**
      * If `opts.duplicates` is false and file has been included,
