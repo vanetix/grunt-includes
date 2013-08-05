@@ -44,7 +44,9 @@ module.exports = function(grunt) {
       silent: false,
       duplicates: true,
       includeRegexp: defaultRegexp,
-      includePath: ''
+      includePath: '',
+      includePrefix: '',
+      includeExt: ''
     });
 
     // Render banner
@@ -200,6 +202,8 @@ module.exports = function(grunt) {
           fileLocation = indent;
           indent = '';
         }
+
+        fileLocation = opts.includePrefix + fileLocation + opts.includeExt;
 
         next = path.join((opts.includePath || path.dirname(p)), fileLocation);
         line = recurse(next, opts, included, indents + indent);
