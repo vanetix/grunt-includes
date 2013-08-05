@@ -151,6 +151,7 @@ watch: {
 ```
 
 ## Release History
+- 0.3.5 - Add options for filename prefix and suffix.
 - 0.3.4 - Add explicit include path option.
 - 0.3.2 - Add silent flag to silence save messages.
 - 0.3.0 - Add indention preservation and banner support
