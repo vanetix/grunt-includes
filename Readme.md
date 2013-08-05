@@ -46,6 +46,18 @@ Default: ``
 
 Indicates the path to use when looking for included files. Instead of using relative path in the include statements, use includePath as base directory.
 
+#### includePrefix
+Type: `String`
+Default: ``
+
+Prepend the defined string to each included filename before reading them. Thus making possible to include "_file.ext" by using directly "file.ext".
+
+#### includeExt
+Type: `String`
+Default: ``
+
+Append the defined string to each included filename before reading them. Thus making possible to include "file.ext" by using directly "file".
+
 #### includeRegexp
 Type: `RegExp`
 Default: `/^(\s*)include\s+"(\S+)"\s*$/`
