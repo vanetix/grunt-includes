@@ -205,6 +205,7 @@ module.exports = function(grunt) {
 
         fileLocation = opts.filenamePrefix + fileLocation + opts.filenameSuffix;
         next = path.join((opts.includePath || path.dirname(p)), fileLocation);
+        var oldLine = line;
         line = recurse(next, opts, included, indents + indent);
 
         /**
@@ -215,6 +216,7 @@ module.exports = function(grunt) {
           line = comment.replace(/%s/g, 'Begin: ' + next) +
                  newline + line + newline + comment.replace(/%s/g, 'End: ' + next);
         }
+        line = oldLine.replace(opts.includeRegexp, line);
       }
 
       // If there are indents and not a match, add them to the line
