@@ -151,6 +151,7 @@ watch: {
 ```
 
 ## Release History
+- 0.3.6 - Update replacement so only the include statement is replace. Thanks [SAPikachu](https://github.com/SAPikachu)!
 - 0.3.5 - Add options for filename prefix and suffix.
 - 0.3.4 - Add explicit include path option.
 - 0.3.2 - Add silent flag to silence save messages.
