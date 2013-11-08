@@ -142,7 +142,7 @@ module.exports = function(grunt) {
    */
 
   function recurse(p, opts, included, indents) {
-    var src, next, match, error, comment,
+    var src, next, match, error, comment, content,
         newline, compiled, indent, fileLocation;
 
     if(!grunt.file.isFile(p)) {
@@ -205,8 +205,8 @@ module.exports = function(grunt) {
 
         fileLocation = opts.filenamePrefix + fileLocation + opts.filenameSuffix;
         next = path.join((opts.includePath || path.dirname(p)), fileLocation);
-        var oldLine = line;
-        line = recurse(next, opts, included, indents + indent);
+        content = recurse(next, opts, included, indents + indent);
+        line = line.replace(opts.includeRegexp, content);
 
         /**
          * Include debug comments if `opts.debug`
@@ -216,7 +216,6 @@ module.exports = function(grunt) {
           line = comment.replace(/%s/g, 'Begin: ' + next) +
                  newline + line + newline + comment.replace(/%s/g, 'End: ' + next);
         }
-        line = oldLine.replace(opts.includeRegexp, line);
       }
 
       // If there are indents and not a match, add them to the line
@@ -225,5 +224,4 @@ module.exports = function(grunt) {
 
     return  compiled.join(newline);
   }
-
 };
