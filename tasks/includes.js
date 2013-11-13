@@ -21,6 +21,12 @@ module.exports = function(grunt) {
   var defaultRegexp = /^(\s*)include\s+"(\S+)"\s*$/;
 
   /**
+   * Regexp to replace with the file inside a template
+   */
+
+  var defaultTemplateFileRegexp = /\{\{\s?file\s?\}\}/;
+
+  /**
    * Regex for matching new lines
    */
 
@@ -47,7 +53,8 @@ module.exports = function(grunt) {
       includePath: '',
       filenamePrefix: '',
       filenameSuffix: '',
-      template: ''
+      template: '',
+      templateFileRegexp: defaultTemplateFileRegexp
     });
 
     // Render banner
@@ -145,9 +152,7 @@ module.exports = function(grunt) {
   function recurse(p, opts, included, indents) {
     var src, next, match, error, comment, content,
         newline, compiled, indent, fileLocation,
-        templateFileRegexp, currentTemplate;
-
-    templateFileRegexp = /\{\{\s?file\s?\}\}/;
+        currentTemplate;
 
     if(!grunt.file.isFile(p)) {
       grunt.log.warn('Included file "' + p + '" not found.');
@@ -215,16 +220,16 @@ module.exports = function(grunt) {
          * Wrap file around in template if `opts.template` has '{{file}}' in it.
          */
 
-        if (opts.template !== '' && opts.template.match(templateFileRegexp)) {
+        if (opts.template !== '' && opts.template.match(opts.templateFileRegexp)) {
           currentTemplate = opts.template.split(newline).map(function(line) {
-            if (line.match(templateFileRegexp)) {
+            if (line.match(opts.templateFileRegexp)) {
               return line;
             } else {
               return indent + indents + line;
             }
           });
 
-          content = currentTemplate.join(newline).replace(templateFileRegexp, content);
+          content = currentTemplate.join(newline).replace(opts.templateFileRegexp, content);
         }
 
         line = line.replace(opts.includeRegexp, content);
