@@ -46,7 +46,8 @@ module.exports = function(grunt) {
       includeRegexp: defaultRegexp,
       includePath: '',
       filenamePrefix: '',
-      filenameSuffix: ''
+      filenameSuffix: '',
+      template: ''
     });
 
     // Render banner
@@ -143,7 +144,9 @@ module.exports = function(grunt) {
 
   function recurse(p, opts, included, indents) {
     var src, next, match, error, comment, content,
-        newline, compiled, indent, fileLocation;
+        newline, compiled, indent, fileLocation, fileRegexp;
+
+    fileRegexp = /\{\{\s?file\s?\}\}/;
 
     if(!grunt.file.isFile(p)) {
       grunt.log.warn('Included file "' + p + '" not found.');
@@ -206,6 +209,15 @@ module.exports = function(grunt) {
         fileLocation = opts.filenamePrefix + fileLocation + opts.filenameSuffix;
         next = path.join((opts.includePath || path.dirname(p)), fileLocation);
         content = recurse(next, opts, included, indents + indent);
+
+        /**
+         * Wrap file around in template if `opts.template` has {{file}} in it.
+         */
+
+        if(opts.template !== '' && opts.template.match(fileRegexp)) {
+          content = opts.template.replace(fileRegexp, content);
+        }
+
         line = line.replace(opts.includeRegexp, content);
 
         /**
