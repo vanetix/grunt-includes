@@ -144,8 +144,8 @@ module.exports = function(grunt) {
 
   function recurse(p, opts, included, indents) {
     var src, next, match, error, comment, content,
-        newline, compiled, indent, fileLocation, templateFileRegexp,
-        currentTemplate;
+        newline, compiled, indent, fileLocation,
+        templateFileRegexp, currentTemplate;
 
     templateFileRegexp = /\{\{\s?file\s?\}\}/;
 
