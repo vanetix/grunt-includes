@@ -27,6 +27,12 @@ module.exports = function(grunt) {
   var defaultTemplateFileRegexp = /\{\{\s?file\s?\}\}/;
 
   /**
+   * Regexp for inerpolating the filename in the template
+   */
+
+  var templateFilenameRegexp = /\{\{\s?fileName\s?\}\}/;
+
+  /**
    * Regex for matching new lines
    */
 
@@ -222,6 +228,7 @@ module.exports = function(grunt) {
 
         if (opts.template !== '' && opts.template.match(opts.templateFileRegexp)) {
           currentTemplate = opts.template.split(newline).map(function(line) {
+            line = line.replace(templateFilenameRegexp, fileLocation);
             if (line.match(opts.templateFileRegexp)) {
               return line;
             } else {
