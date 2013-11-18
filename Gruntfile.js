@@ -51,6 +51,15 @@ module.exports = function(grunt) {
         options: {
           includePath: 'test/cases/includes'
         }
+      },
+      template: {
+        src: ['test/cases/template.html'],
+        dest: 'tmp/template/template.html',
+        options: {
+          template: 'Template start {{ fileName }}' + "\n" +
+                    '{{ file }}' + "\n" +
+                    'Template end'
+        },
       }
     }
   });

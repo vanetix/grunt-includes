@@ -21,6 +21,18 @@ module.exports = function(grunt) {
   var defaultRegexp = /^(\s*)include\s+"(\S+)"\s*$/;
 
   /**
+   * Regexp to replace with the file inside a template
+   */
+
+  var defaultTemplateFileRegexp = /\{\{\s?file\s?\}\}/;
+
+  /**
+   * Regexp for inerpolating the filename in the template
+   */
+
+  var templateFilenameRegexp = /\{\{\s?fileName\s?\}\}/;
+
+  /**
    * Regex for matching new lines
    */
 
@@ -46,7 +58,9 @@ module.exports = function(grunt) {
       includeRegexp: defaultRegexp,
       includePath: '',
       filenamePrefix: '',
-      filenameSuffix: ''
+      filenameSuffix: '',
+      template: '',
+      templateFileRegexp: defaultTemplateFileRegexp
     });
 
     // Render banner
@@ -143,7 +157,8 @@ module.exports = function(grunt) {
 
   function recurse(p, opts, included, indents) {
     var src, next, match, error, comment, content,
-        newline, compiled, indent, fileLocation;
+        newline, compiled, indent, fileLocation,
+        currentTemplate;
 
     if(!grunt.file.isFile(p)) {
       grunt.log.warn('Included file "' + p + '" not found.');
@@ -206,6 +221,24 @@ module.exports = function(grunt) {
         fileLocation = opts.filenamePrefix + fileLocation + opts.filenameSuffix;
         next = path.join((opts.includePath || path.dirname(p)), fileLocation);
         content = recurse(next, opts, included, indents + indent);
+
+        /**
+         * Wrap file around in template if `opts.template` has '{{file}}' in it.
+         */
+
+        if (opts.template !== '' && opts.template.match(opts.templateFileRegexp)) {
+          currentTemplate = opts.template.split(newline).map(function(line) {
+            line = line.replace(templateFilenameRegexp, fileLocation);
+            if (line.match(opts.templateFileRegexp)) {
+              return line;
+            } else {
+              return indent + indents + line;
+            }
+          });
+
+          content = currentTemplate.join(newline).replace(opts.templateFileRegexp, content);
+        }
+
         line = line.replace(opts.includeRegexp, content);
 
         /**

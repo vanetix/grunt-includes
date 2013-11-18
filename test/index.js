@@ -4,7 +4,7 @@ exports.includes = {
   cases: function(test) {
     var expect, result;
 
-    test.expect(7);
+    test.expect(8);
 
     expect = grunt.file.read("test/expected/simple.html");
     result = grunt.file.read("tmp/cases/simple.html");
@@ -33,6 +33,10 @@ exports.includes = {
     expect = grunt.file.read("test/expected/include_path.html");
     result = grunt.file.read("tmp/include_path/simple.html");
     test.equal(expect, result, "should use header and footer from includes directory");
+
+    expect = grunt.file.read("test/expected/template.html");
+    result = grunt.file.read("tmp/template/template.html");
+    test.equal(expect, result, "should have header and body wrapped with template");
 
     test.done();
   }
