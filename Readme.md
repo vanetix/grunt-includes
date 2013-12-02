@@ -16,6 +16,12 @@ An example site can be found at [grunt-includes-example](https://github.com/vane
 
 ## Options
 
+#### flatten
+Type: `String`
+Default: `false`
+
+Flatten all file sources to the destination directory. For example `source/file/path.html` will be shortened to `path.html`.
+
 #### banner
 Type: `String`
 Default: `''`
@@ -57,6 +63,17 @@ Type: `String`
 Default: ``
 
 Append the defined string to each included filename before reading them. Thus making possible to include "file.ext" by using directly "file".
+
+#### templateFileRegexp
+Type: `RegExp`
+Default: `/\{\{\s?file\s?\}\}/`
+
+Regular expression for matching and replacing template text. Example: `Start of template | {{file}} | End of template`.
+
+#### template
+Type: `String`
+
+Template to be rendered into, `{{fileName}}` and `{{file}}` will be replaced with the filename and file contents respectively.
 
 #### includeRegexp
 Type: `RegExp`
@@ -151,6 +168,8 @@ watch: {
 ```
 
 ## Release History
+- 0.4.0 - Release templating ability. Thanks [nathankot](https://github.com/nathankot)!
+- 0.3.7 - Various bug fixes and updates.
 - 0.3.6 - Update replacement so only the include statement is replace. Thanks [SAPikachu](https://github.com/SAPikachu)!
 - 0.3.5 - Add options for filename prefix and suffix.
 - 0.3.4 - Add explicit include path option.
