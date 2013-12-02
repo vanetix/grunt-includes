@@ -4,7 +4,10 @@
   "version": "0.3.6",
   "author": "vanetix <matmcfarland@gmail.com>",
   "main": "Gruntfile.js",
-  "bin": "bin/grunt-includes",
+  "homepage": "https://github.com/vanetix/grunt-includes",
+  "bugs": {
+    "url": "https://github.com/vanetix/grunt-includes/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/vanetix/grunt-includes.git"
@@ -27,5 +30,8 @@
   ],
   "engines": {
     "node": ">= 0.8.0"
-  }
+  },
+  "files": [
+    "tasks/includes.js"
+  ]
 }
