@@ -191,13 +191,11 @@ module.exports = function(grunt) {
         next = path.join((opts.includePath || path.dirname(p)), fileLocation);
         content = recurse(next, opts, included, indents + indent);
 
-        /**
-         * Wrap file around in template if `opts.template` has '{{file}}' in it.
-         */
-
-        if (opts.template !== '' && opts.template.match(opts.templateFileRegexp)) {
+        // Wrap file around in template if `opts.template` has '{{file}}' in it.
+        if(opts.template !== '' && opts.template.match(opts.templateFileRegexp)) {
           currentTemplate = opts.template.split(newline).map(function(line) {
             line = line.replace(templateFilenameRegexp, fileLocation);
+
             if (line.match(opts.templateFileRegexp)) {
               return line;
             } else {
@@ -210,10 +208,11 @@ module.exports = function(grunt) {
 
         line = line.replace(opts.includeRegexp, content);
 
-        /**
-         * Include debug comments if `opts.debug`
-         */
+        // Safe guard against $ replacements, change $ to $$
+        content = content.replace(/\$/g, '$$$$');
+        line = line.replace(opts.includeRegexp, content);
 
+        // Include debug comments if `opts.debug`
         if(opts.debug) {
           line = comment.replace(/%s/g, 'Begin: ' + next) +
                  newline + line + newline + comment.replace(/%s/g, 'End: ' + next);
