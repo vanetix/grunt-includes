@@ -1,4 +1,4 @@
-/*
+/**
  * grunt-includes
  * https://github.com/vanetix/grunt-includes
  *
@@ -14,29 +14,17 @@ module.exports = function(grunt) {
 
   var path = require('path');
 
-  /**
-   * Regex for parsing includes
-   */
+  // Regex for matching new lines
+  var newlineRegexp = /\r?\n/g;
 
+  // Regex for parsing includes
   var defaultRegexp = /^(\s*)include\s+"(\S+)"\s*$/;
 
-  /**
-   * Regexp to replace with the file inside a template
-   */
-
+  // Regexp to replace with the file inside a template
   var defaultTemplateFileRegexp = /\{\{\s?file\s?\}\}/;
 
-  /**
-   * Regexp for inerpolating the filename in the template
-   */
-
+  // Regexp for inerpolating the filename in the template
   var templateFilenameRegexp = /\{\{\s?fileName\s?\}\}/;
-
-  /**
-   * Regex for matching new lines
-   */
-
-  var newlineRegexp = /\r?\n/g;
 
   /**
    * Core `grunt-includes` task
@@ -46,10 +34,7 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('includes', 'Include other files within files.', function() {
     var banner;
 
-    /**
-     * Default options
-     */
-
+    // Default options
     var opts = this.options({
       debug: false,
       banner: '',
@@ -170,11 +155,7 @@ module.exports = function(grunt) {
     newline = newlineStyle(p);
     included = included || [];
 
-    /**
-     * If `opts.duplicates` is false and file has been included,
-     * error
-     */
-
+    // If `opts.duplicates` is false and file has been included, error
     if(!opts.duplicates && ~included.indexOf(p)) {
       error = 'Duplicate include: ' + p + ' skipping.';
       grunt.log.error(error);
@@ -186,32 +167,20 @@ module.exports = function(grunt) {
       }
     }
 
-    /**
-     * At this point the file is considered included
-     */
-
+    // At this point the file is considered included
     included.push(p);
 
-    /**
-     * Split the file on newlines
-     */
-
+    // Split the file on newlines
     src = grunt.file.read(p).split(newline);
 
-    /**
-     * Loop through the file calling `recurse` if an include is found
-     */
-
+    // Loop through the file calling `recurse` if an include is found
     compiled = src.map(function(line) {
       match = line.match(opts.includeRegexp);
 
-      /**
-       * If the line has an include statement, recurse
-       */
-
+      // If the line has an include statement, recurse
       if(match) {
-        fileLocation = match[2];
         indent = match[1];
+        fileLocation = match[2];
 
         if (!fileLocation) {
           fileLocation = indent;
