@@ -203,10 +203,10 @@ module.exports = function(grunt) {
             }
           });
 
+          // Safe guard against $ replacements - this can probably be improved
+          content = content.replace(/\$/g, '$$$$');
           content = currentTemplate.join(newline).replace(opts.templateFileRegexp, content);
         }
-
-        line = line.replace(opts.includeRegexp, content);
 
         // Safe guard against $ replacements, change $ to $$
         content = content.replace(/\$/g, '$$$$');
