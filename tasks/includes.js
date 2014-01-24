@@ -215,7 +215,7 @@ module.exports = function(grunt) {
         // Include debug comments if `opts.debug`
         if(opts.debug) {
           line = comment.replace(/%s/g, 'Begin: ' + next) +
-                 newline + line + newline + comment.replace(/%s/g, 'End: ' + next);
+                 newline + line + comment.replace(/%s/g, 'End: ' + next);
         }
       }
 
