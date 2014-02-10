@@ -62,13 +62,13 @@ module.exports = function(grunt) {
         if(grunt.file.isFile(p)) {
           return true;
         } else {
-          grunt.log.warn('Source file "' + p + '" not found.');
+          grunt.fail.error('Source file "' + p + '" not found.');
           return false;
         }
       });
 
       if(src.length > 1 && isFilename(f.dest)) {
-        grunt.log.warn('Source file cannot be more than one when dest is a file.');
+        grunt.fail.error('Source file cannot be more than one when dest is a file.');
       }
 
       src.forEach(function(p) {
@@ -146,7 +146,7 @@ module.exports = function(grunt) {
         currentTemplate;
 
     if(!grunt.file.isFile(p)) {
-      grunt.log.warn('Included file "' + p + '" not found.');
+      grunt.fail.warn('Included file "' + p + '" not found.');
       return 'Error including "' + p + '".';
     }
 
