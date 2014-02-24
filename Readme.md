@@ -99,7 +99,7 @@ includes: {
     src: ['path/to/foo.html', 'path/to/bar.html'], // Source files
     dest: 'tmp', // Destination directory
     flatten: true,
-    cwd: '.'
+    cwd: '.',
     options: {
       silent: true,
       banner: '<!-- I am a banner <% includes.files.dest %> -->'
