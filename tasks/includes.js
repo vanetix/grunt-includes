@@ -62,13 +62,13 @@ module.exports = function(grunt) {
         if(grunt.file.isFile(p)) {
           return true;
         } else {
-          grunt.fail.error('Source file "' + p + '" not found.');
+          grunt.fail.fatal('Source "' + p + '" is not a file');
           return false;
         }
       });
 
       if(src.length > 1 && isFilename(f.dest)) {
-        grunt.fail.error('Source file cannot be more than one when dest is a file.');
+        grunt.fail.fatal('Source file cannot be more than one when dest is a file.');
       }
 
       src.forEach(function(p) {
