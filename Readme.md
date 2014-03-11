@@ -118,11 +118,11 @@ includes: {
       duplicates: false,
       debug: true
     },
-    files: {
+    files: [{
       cwd: 'assets/js/',
       src: '**/*.js',
       dest: 'assets/dist/js/',
-    },
+    }],
   },
 },
 watch: {
@@ -132,6 +132,10 @@ watch: {
   },
 },
 ```
+
+## Troubleshooting
+
+ * **Grunt is copying the wrong files to the wrong locations.** If you're using `includes` as a [multitask](http://gruntjs.com/creating-tasks#multi-tasks) and are specifying a `files` object with `src`, `dest`, and `cwd`, you must supply it in an array using the [files array format](http://gruntjs.com/configuring-tasks#files-array-format). If you shorthand it by setting `files: {src: ... }`, Grunt will misinterpret it into the [files object format](http://gruntjs.com/configuring-tasks#files-object-format) and mysteriously copy artifacts into (potentially new) `src`, `dest`, and `cwd` directories. This appears to affect only multitask usage.
 
 ## Example
 *index.html*
