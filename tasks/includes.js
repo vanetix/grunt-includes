@@ -48,6 +48,14 @@ module.exports = function(grunt) {
       templateFileRegexp: defaultTemplateFileRegexp
     });
 
+    if(grunt.util.kindOf(opts.includeRegexp) === 'string') {
+      opts.includeRegexp = new RegExp(opts.includeRegexp);
+    }
+
+    if(grunt.util.kindOf(opts.templateFileRegexp) === 'string') {
+      opts.templateFileRegexp = new RegExp(opts.templateFileRegexp);
+    }
+
     // Render banner
     banner = grunt.template.process(opts.banner);
 
