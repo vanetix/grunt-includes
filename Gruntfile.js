@@ -59,7 +59,15 @@ module.exports = function(grunt) {
           template: 'Template start {{ fileName }}' + "\n" +
                     '{{ file }}' + "\n" +
                     'Template end'
-        },
+        }
+      },
+      full_path: {
+        src: ['test/cases/simple.html'],
+        dest: 'tmp/full_path/simple.html',
+        options: {
+          filenamePrefix: '404_',
+          filenameSuffix: '.js'
+        }
       }
     }
   });

@@ -195,16 +195,13 @@ module.exports = function(grunt) {
           indent = '';
         }
 
-        // do not provide a filenameSuffix if one has been given by the include
-        // this allows the end user to specify a suffix to overwrite the default
-        // given in the gruntfile in special cases
-        var suffix = opts.filenameSuffix;
-        if( fileLocation.split('.').length > 1 )
-        {
-          suffix = '';
+        // If a full filepath + extension is given, use it instead of building
+        if(isFilename(fileLocation)) {
+          fileLocation = fileLocation;
+        } else {
+          fileLocation = opts.filenamePrefix + fileLocation + opts.filenameSuffix;
         }
 
-        fileLocation = opts.filenamePrefix + fileLocation + opts.filenameSuffix;
         next = path.join((opts.includePath || path.dirname(p)), fileLocation);
         content = recurse(next, opts, included, indents + indent);
 
