@@ -172,6 +172,7 @@ watch: {
 ```
 
 ## Release History
+- 0.5.0 - Given a full include path, filenamePrefix and filenameSuffix will now be ignored.
 - 0.4.0 - Release templating ability. Thanks [nathankot](https://github.com/nathankot)!
 - 0.3.7 - Various bug fixes and updates.
 - 0.3.6 - Update replacement so only the include statement is replace. Thanks [SAPikachu](https://github.com/SAPikachu)!
