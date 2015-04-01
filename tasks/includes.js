@@ -2,7 +2,7 @@
  * grunt-includes
  * https://github.com/vanetix/grunt-includes
  *
- * Copyright (c) 2013 Matt McFarland
+ * Copyright (c) 2012-2015 Matt McFarland and Contributors
  * Licensed under the MIT license.
  */
 
