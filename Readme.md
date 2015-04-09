@@ -47,10 +47,10 @@ Default: `false`
 Silences file save success messages.
 
 #### includePath
-Type: `String`
+Type: `String` | `Array`
 Default: ``
 
-Indicates the path to use when looking for included files. Instead of using relative path in the include statements, use includePath as base directory.
+Indicates the path(s) to use when looking for included files. Instead of using relative path in the include statements, use includePath as base directory. When using an array for includePath, the first path for a file that is valid will be used.
 
 #### filenamePrefix
 Type: `String`
