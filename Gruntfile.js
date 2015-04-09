@@ -68,6 +68,17 @@ module.exports = function(grunt) {
           filenamePrefix: '404_',
           filenameSuffix: '.js'
         }
+      },
+      multiple_paths: {
+        src: ['test/cases/simple.html'],
+        dest: 'tmp/multiple_paths/simple.html',
+        options: {
+          includePath: [
+            'no_where',
+            'test/cases/include',
+            'test/cases/includes'
+          ]
+        }
       }
     }
   });

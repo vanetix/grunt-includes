@@ -4,7 +4,7 @@ exports.includes = {
   cases: function(test) {
     var expect, result;
 
-    test.expect(9);
+    test.expect(10);
 
     expect = grunt.file.read("test/expected/simple.html");
     result = grunt.file.read("tmp/cases/simple.html");
@@ -41,6 +41,10 @@ exports.includes = {
     expect = grunt.file.read("test/expected/simple.html");
     result = grunt.file.read("tmp/full_path/simple.html");
     test.equal(expect, result, "should use the full filename given in include path");
+
+    expect = grunt.file.read("test/expected/multiple_paths.html");
+    result = grunt.file.read("tmp/multiple_paths/simple.html");
+    test.equal(expect, result, "should use array of include paths to find proper path");
 
     test.done();
   }

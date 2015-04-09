@@ -202,7 +202,20 @@ module.exports = function(grunt) {
           fileLocation = opts.filenamePrefix + fileLocation + opts.filenameSuffix;
         }
 
-        next = path.join((opts.includePath || path.dirname(p)), fileLocation);
+        // Try to locate the file through multiple includePath if array
+        if(grunt.util.kindOf(opts.includePath) === 'array') {
+          opts.includePath.some(function(p) {
+            next = path.join(p, fileLocation);
+            return grunt.file.isFile(next);
+          });
+
+          if(!next) {
+            next = path.join(path.dirname(p), fileLocation);
+          }
+        } else {
+          next = path.join((opts.includePath || path.dirname(p)), fileLocation);
+        }
+
         content = recurse(next, opts, included, indents + indent);
 
         // Wrap file around in template if `opts.template` has '{{file}}' in it.
