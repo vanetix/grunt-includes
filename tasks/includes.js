@@ -166,7 +166,9 @@ module.exports = function(grunt) {
     // If `opts.duplicates` is false and file has been included, error
     if(!opts.duplicates && ~included.indexOf(p)) {
       error = 'Duplicate include: ' + p + ' skipping.';
-      grunt.log.error(error);
+      if (!opts.silent) {
+         grunt.log.error(error);
+      }
 
       if(opts.debug) {
         return comment.replace(/%s/g, error);
