@@ -48,11 +48,11 @@ module.exports = function(grunt) {
       templateFileRegexp: defaultTemplateFileRegexp
     });
 
-    if(grunt.util.kindOf(opts.includeRegexp) === 'string') {
+    if (grunt.util.kindOf(opts.includeRegexp) === 'string') {
       opts.includeRegexp = new RegExp(opts.includeRegexp);
     }
 
-    if(grunt.util.kindOf(opts.templateFileRegexp) === 'string') {
+    if (grunt.util.kindOf(opts.templateFileRegexp) === 'string') {
       opts.templateFileRegexp = new RegExp(opts.templateFileRegexp);
     }
 
@@ -63,11 +63,11 @@ module.exports = function(grunt) {
       var src, cwd = f.cwd;
 
       src = f.src.filter(function(p) {
-        if(cwd) {
+        if (cwd) {
           p = path.join(f.cwd, p);
         }
 
-        if(grunt.file.isFile(p)) {
+        if (grunt.file.isFile(p)) {
           return true;
         } else {
           grunt.fail.fatal('Source "' + p + '" is not a file');
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
         }
       });
 
-      if(src.length > 1 && isFilename(f.dest)) {
+      if (src.length > 1 && isFilename(f.dest)) {
         grunt.fail.fatal('Source file cannot be more than one when dest is a file.');
       }
 
@@ -83,13 +83,13 @@ module.exports = function(grunt) {
         var fileName = f.flatten ? path.basename(p) : p;
         var outFile = isFilename(f.dest) ? f.dest : path.join(f.dest, fileName);
 
-        if(cwd) {
+        if (cwd) {
           p = path.join(cwd, p);
         }
 
         grunt.file.write(outFile, banner + recurse(p, opts));
 
-        if(!opts.silent) {
+        if (!opts.silent) {
           grunt.log.oklns('Saved ' + outFile);
         }
       });
@@ -153,7 +153,7 @@ module.exports = function(grunt) {
         newline, compiled, indent, fileLocation,
         currentTemplate;
 
-    if(!grunt.file.isFile(p)) {
+    if (!grunt.file.isFile(p)) {
       grunt.fail.warn('Included file "' + p + '" not found.');
       return 'Error including "' + p + '".';
     }
@@ -164,14 +164,14 @@ module.exports = function(grunt) {
     included = included || [];
 
     // If `opts.duplicates` is false and file has been included, error
-    if(!opts.duplicates && ~included.indexOf(p)) {
+    if (!opts.duplicates && ~included.indexOf(p)) {
       error = 'Duplicate include: ' + p + ' skipping.';
 
       if (!opts.silent) {
          grunt.log.error(error);
       }
 
-      if(opts.debug) {
+      if (opts.debug) {
         return comment.replace(/%s/g, error);
       } else {
         return '';
@@ -189,7 +189,7 @@ module.exports = function(grunt) {
       match = line.match(opts.includeRegexp);
 
       // If the line has an include statement, recurse
-      if(match) {
+      if (match) {
         indent = match[1];
         fileLocation = match[2];
 
@@ -199,20 +199,20 @@ module.exports = function(grunt) {
         }
 
         // If a full filepath + extension is given, use it instead of building
-        if(isFilename(fileLocation)) {
+        if (isFilename(fileLocation)) {
           fileLocation = fileLocation;
         } else {
           fileLocation = opts.filenamePrefix + fileLocation + opts.filenameSuffix;
         }
 
         // Try to locate the file through multiple includePath if array
-        if(grunt.util.kindOf(opts.includePath) === 'array') {
+        if (grunt.util.kindOf(opts.includePath) === 'array') {
           opts.includePath.some(function(p) {
             next = path.join(p, fileLocation);
             return grunt.file.isFile(next);
           });
 
-          if(!next) {
+          if (!next) {
             next = path.join(path.dirname(p), fileLocation);
           }
         } else {
@@ -222,7 +222,7 @@ module.exports = function(grunt) {
         content = recurse(next, opts, included, indents + indent);
 
         // Wrap file around in template if `opts.template` has '{{file}}' in it.
-        if(opts.template !== '' && opts.template.match(opts.templateFileRegexp)) {
+        if (opts.template !== '' && opts.template.match(opts.templateFileRegexp)) {
           currentTemplate = opts.template.split(newline).map(function(line) {
             line = line.replace(templateFilenameRegexp, fileLocation);
 
@@ -243,7 +243,7 @@ module.exports = function(grunt) {
         line = line.replace(opts.includeRegexp, content);
 
         // Include debug comments if `opts.debug`
-        if(opts.debug) {
+        if (opts.debug) {
           line = comment.replace(/%s/g, 'Begin: ' + next) +
                  newline + line + comment.replace(/%s/g, 'End: ' + next);
         }
