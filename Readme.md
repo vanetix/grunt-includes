@@ -1,5 +1,5 @@
 # grunt-includes [![Build Status](https://travis-ci.org/vanetix/grunt-includes.png?branch=master)](https://travis-ci.org/vanetix/grunt-includes)
-***Requires grunt ~0.4.0***
+***Requires grunt >= 1.0.0***
 
 A grunt task for including a file within another file (think php includes). *Circular* imports will break the recursive strategy. *All includes retain parent and child indentation*
 
