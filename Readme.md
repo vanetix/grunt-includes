@@ -71,7 +71,7 @@ Default: `/\{\{\s?file\s?\}\}/`
 Regular expression for matching and replacing template text. Example: `Start of template | {{file}} | End of template`.
 
 #### template
-Type: `String`
+Type: `String` | `Path`
 
 Template to be rendered into, `{{fileName}}` and `{{file}}` will be replaced with the filename and file contents respectively.
 
@@ -129,6 +129,24 @@ watch: {
   js: {
     files: ['assets/js/**/*.js'],
     tasks: ['includes:js', 'jshint']
+  },
+},
+```
+
+Or build files based on a template, where `{{file}}` gets replaced with the contents of file being parsed.
+
+```javascript
+includes: {
+  target: {
+    options: {
+      includeRegexp: /^\/\/\s*import\s+['"]?([^'"]+)['"]?\s*$/,
+      template: 'src/wrapper.html'
+    },
+    files: [{
+      cwd: 'src/',
+      src: '*.html',
+      dest: 'dist/',
+    }],
   },
 },
 ```
