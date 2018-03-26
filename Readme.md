@@ -144,7 +144,7 @@ watch: {
 },
 ```
 
-Or build files with on a wrapper, where `{{file}}` gets replaced with the contents of the file being parsed.
+Or build files with a wrapper, where `{{file}}` gets replaced with the contents of the file being parsed.
 
 ```javascript
 includes: {
