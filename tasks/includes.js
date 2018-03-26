@@ -87,7 +87,7 @@ module.exports = function(grunt) {
           p = path.join(cwd, p);
         }
 
-        grunt.file.write(outFile, banner + recurse(p, opts));
+        grunt.file.write(outFile, banner + recurse(p, opts, 1));
 
         if (!opts.silent) {
           grunt.log.oklns('Saved ' + outFile);
@@ -136,7 +136,10 @@ module.exports = function(grunt) {
    */
 
   function newlineStyle(p) {
-    var matches = grunt.file.read(p).match(newlineRegexp);
+    
+    if( grunt.file.isFile(p) ) p = grunt.file.read(p);
+    
+    var matches = p.match(newlineRegexp);
 
     return (matches && matches[0]) || grunt.util.linefeed;
   }
@@ -148,7 +151,7 @@ module.exports = function(grunt) {
    * @return {String}
    */
 
-  function recurse(p, opts, included, indents) {
+  function recurse(p, opts, level, included, indents) {
     var src, next, match, error, comment, content,
         newline, compiled, indent, fileLocation,
         currentTemplate;
@@ -181,8 +184,45 @@ module.exports = function(grunt) {
     // At this point the file is considered included
     included.push(p);
 
-    // Split the file on newlines
-    src = grunt.file.read(p).split(newline);
+    // Read the source file.
+    src = grunt.file.read(p);
+    
+    // Wrap the file in the template.
+    if( opts.template !== '' && level == 1 ) {
+      
+      if( grunt.file.isFile(opts.template) ) opts.template = grunt.file.read(opts.template);
+  
+      if( opts.template.match(opts.templateFileRegexp) ) {
+      
+        currentTemplate = opts.template.split(newlineStyle(opts.template)).map(function(line) {
+
+          line = line.replace(templateFilenameRegexp, fileLocation);
+          
+          if( line.match(opts.templateFileRegexp) ) { 
+            
+            // Capture the existing indents.
+            var indent = line.match(/^(\s*)/)[1];
+            
+            // Add indents to source file.
+            src = src.split(newline).map(function(srcline, i) { return i === 0 ? srcline : indent + srcline; }).join(newline);
+      
+            // Replace the contents.
+            line = line.replace(opts.templateFileRegexp, src);
+            
+          }
+
+          return line;
+
+        });
+
+        src = currentTemplate.join(newline);
+        
+      }
+      
+    }
+    
+    // Split the file on newlines.
+    src = src.split(newline);
 
     // Loop through the file calling `recurse` if an include is found
     compiled = src.map(function(line) {
@@ -219,24 +259,7 @@ module.exports = function(grunt) {
           next = path.join((opts.includePath || path.dirname(p)), fileLocation);
         }
 
-        content = recurse(next, opts, included, indents + indent);
-
-        // Wrap file around in template if `opts.template` has '{{file}}' in it.
-        if (opts.template !== '' && opts.template.match(opts.templateFileRegexp)) {
-          currentTemplate = opts.template.split(newline).map(function(line) {
-            line = line.replace(templateFilenameRegexp, fileLocation);
-
-            if (line.match(opts.templateFileRegexp)) {
-              return line;
-            } else {
-              return indent + indents + line;
-            }
-          });
-
-          // Safe guard against $ replacements - this can probably be improved
-          content = content.replace(/\$/g, '$$$$');
-          content = currentTemplate.join(newline).replace(opts.templateFileRegexp, content);
-        }
+        content = recurse(next, opts, level + 1, included, indents + indent);
 
         // Safe guard against $ replacements, change $ to $$
         content = content.replace(/\$/g, '$$$$');
