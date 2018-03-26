@@ -75,6 +75,17 @@ Type: `String`
 
 Template to be rendered into, `{{fileName}}` and `{{file}}` will be replaced with the filename and file contents respectively.
 
+#### wrapperFileRegexp
+Type: `RegExp`
+Default: `/\{\{\s?file\s?\}\}/`
+
+Regular expression for matching and replacing file contents within a wrapper. Example: `Start of wrapper | {{file}} | End of wrapper`.
+
+#### wrapper
+Type: `String` | `Path`
+
+Wrapper to be rendered into, `{{fileName}}` and `{{file}}` will be replaced with the filename and file contents respectively.
+
 #### includeRegexp
 Type: `RegExp`
 Default: `/^(\s*)include\s+"(\S+)"\s*$/`
@@ -133,6 +144,23 @@ watch: {
 },
 ```
 
+Or build files with a wrapper, where `{{file}}` gets replaced with the contents of the file being parsed.
+
+```javascript
+includes: {
+  target: {
+    options: {
+      wrapper: 'src/wrapper.html'
+    },
+    files: [{
+      cwd: 'src/',
+      src: '*.html',
+      dest: 'dist/',
+    }],
+  },
+},
+```
+
 ## Troubleshooting
 
  * **Grunt is copying the wrong files to the wrong locations.** If you're using `includes` as a [multitask](http://gruntjs.com/creating-tasks#multi-tasks) and are specifying a `files` object with `src`, `dest`, and `cwd`, you must supply it in an array using the [files array format](http://gruntjs.com/configuring-tasks#files-array-format). If you shorthand it by setting `files: {src: ... }`, Grunt will misinterpret it into the [files object format](http://gruntjs.com/configuring-tasks#files-object-format) and mysteriously copy artifacts into (potentially new) `src`, `dest`, and `cwd` directories. This appears to affect only multitask usage.
@@ -172,6 +200,7 @@ watch: {
 ```
 
 ## Release History
+- 1.1.0 - Release wrapper ability by [laurenhamel](https://github.com/laurenhamel)
 - 0.5.0 - Given a full include path, filenamePrefix and filenameSuffix will now be ignored.
 - 0.4.0 - Release templating ability. Thanks [nathankot](https://github.com/nathankot)!
 - 0.3.7 - Various bug fixes and updates.

@@ -45,7 +45,9 @@ module.exports = function(grunt) {
       filenamePrefix: '',
       filenameSuffix: '',
       template: '',
-      templateFileRegexp: defaultTemplateFileRegexp
+      templateFileRegexp: defaultTemplateFileRegexp,
+      wrapper: '',
+      wrapperFileRegexp: defaultTemplateFileRegexp
     });
 
     if (grunt.util.kindOf(opts.includeRegexp) === 'string') {
@@ -54,6 +56,10 @@ module.exports = function(grunt) {
 
     if (grunt.util.kindOf(opts.templateFileRegexp) === 'string') {
       opts.templateFileRegexp = new RegExp(opts.templateFileRegexp);
+    }
+    
+    if (grunt.util.kindOf(opts.wrapperFileRegexp) === 'string') {
+      opts.wrapperFileRegexp = new RegExp(opts.wrapperFileRegexp);
     }
 
     // Render banner
@@ -87,7 +93,7 @@ module.exports = function(grunt) {
           p = path.join(cwd, p);
         }
 
-        grunt.file.write(outFile, banner + recurse(p, opts));
+        grunt.file.write(outFile, banner + recurse(p, opts, 1));
 
         if (!opts.silent) {
           grunt.log.oklns('Saved ' + outFile);
@@ -136,7 +142,10 @@ module.exports = function(grunt) {
    */
 
   function newlineStyle(p) {
-    var matches = grunt.file.read(p).match(newlineRegexp);
+    
+    if( grunt.file.isFile(p) ) p = grunt.file.read(p);
+    
+    var matches = p.match(newlineRegexp);
 
     return (matches && matches[0]) || grunt.util.linefeed;
   }
@@ -148,7 +157,7 @@ module.exports = function(grunt) {
    * @return {String}
    */
 
-  function recurse(p, opts, included, indents) {
+  function recurse(p, opts, level, included, indents) {
     var src, next, match, error, comment, content,
         newline, compiled, indent, fileLocation,
         currentTemplate;
@@ -181,8 +190,45 @@ module.exports = function(grunt) {
     // At this point the file is considered included
     included.push(p);
 
-    // Split the file on newlines
-    src = grunt.file.read(p).split(newline);
+    // Read the source file.
+    src = grunt.file.read(p);
+    
+    // Add wrappers to source files.
+    if( opts.wrapper !== '' && level == 1 ) {
+      
+      if( grunt.file.isFile(opts.wrapper) ) opts.wrapper = grunt.file.read(opts.wrapper);
+  
+      if( opts.wrapper.match(opts.wrapperFileRegexp) ) {
+      
+        currentWrapper = opts.wrapper.split(newlineStyle(opts.wrapper)).map(function(line) {
+
+          line = line.replace(templateFilenameRegexp, fileLocation);
+          
+          if( line.match(opts.wrapperFileRegexp) ) { 
+            
+            // Capture the existing indents.
+            var indent = line.match(/^(\s*)/)[1];
+            
+            // Add indents to source file.
+            src = src.split(newline).map(function(srcline, i) { return i === 0 ? srcline : indent + srcline; }).join(newline);
+      
+            // Replace the contents.
+            line = line.replace(opts.wrapperFileRegexp, src);
+            
+          }
+
+          return line;
+
+        });
+
+        src = currentWrapper.join(newline);
+        
+      }
+      
+    }
+    
+    // Split the file on newlines.
+    src = src.split(newline);
 
     // Loop through the file calling `recurse` if an include is found
     compiled = src.map(function(line) {
@@ -219,8 +265,8 @@ module.exports = function(grunt) {
           next = path.join((opts.includePath || path.dirname(p)), fileLocation);
         }
 
-        content = recurse(next, opts, included, indents + indent);
-
+        content = recurse(next, opts, level + 1, included, indents + indent);
+        
         // Wrap file around in template if `opts.template` has '{{file}}' in it.
         if (opts.template !== '' && opts.template.match(opts.templateFileRegexp)) {
           currentTemplate = opts.template.split(newline).map(function(line) {
