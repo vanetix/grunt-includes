@@ -139,7 +139,6 @@ Or build files based on a template, where `{{file}}` gets replaced with the cont
 includes: {
   target: {
     options: {
-      includeRegexp: /^\/\/\s*import\s+['"]?([^'"]+)['"]?\s*$/,
       template: 'src/wrapper.html'
     },
     files: [{
