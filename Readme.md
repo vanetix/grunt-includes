@@ -133,7 +133,7 @@ watch: {
 },
 ```
 
-Or build files based on a template, where `{{file}}` gets replaced with the contents of file being parsed.
+Or build files based on a template, where `{{file}}` gets replaced with the contents of the file being parsed.
 
 ```javascript
 includes: {
