@@ -45,7 +45,9 @@ module.exports = function(grunt) {
       filenamePrefix: '',
       filenameSuffix: '',
       template: '',
-      templateFileRegexp: defaultTemplateFileRegexp
+      templateFileRegexp: defaultTemplateFileRegexp,
+      wrapper: '',
+      wrapperFileRegexp: defaultTemplateFileRegexp
     });
 
     if (grunt.util.kindOf(opts.includeRegexp) === 'string') {
@@ -54,6 +56,10 @@ module.exports = function(grunt) {
 
     if (grunt.util.kindOf(opts.templateFileRegexp) === 'string') {
       opts.templateFileRegexp = new RegExp(opts.templateFileRegexp);
+    }
+    
+    if (grunt.util.kindOf(opts.wrapperFileRegexp) === 'string') {
+      opts.wrapperFileRegexp = new RegExp(opts.wrapperFileRegexp);
     }
 
     // Render banner
@@ -187,18 +193,18 @@ module.exports = function(grunt) {
     // Read the source file.
     src = grunt.file.read(p);
     
-    // Wrap the file in the template.
-    if( opts.template !== '' && level == 1 ) {
+    // Add wrappers to source files.
+    if( opts.wrapper !== '' && level == 1 ) {
       
-      if( grunt.file.isFile(opts.template) ) opts.template = grunt.file.read(opts.template);
+      if( grunt.file.isFile(opts.wrapper) ) opts.wrapper = grunt.file.read(opts.wrapper);
   
-      if( opts.template.match(opts.templateFileRegexp) ) {
+      if( opts.wrapper.match(opts.wrapperFileRegexp) ) {
       
-        currentTemplate = opts.template.split(newlineStyle(opts.template)).map(function(line) {
+        currentWrapper = opts.wrapper.split(newlineStyle(opts.wrapper)).map(function(line) {
 
           line = line.replace(templateFilenameRegexp, fileLocation);
           
-          if( line.match(opts.templateFileRegexp) ) { 
+          if( line.match(opts.wrapperFileRegexp) ) { 
             
             // Capture the existing indents.
             var indent = line.match(/^(\s*)/)[1];
@@ -207,7 +213,7 @@ module.exports = function(grunt) {
             src = src.split(newline).map(function(srcline, i) { return i === 0 ? srcline : indent + srcline; }).join(newline);
       
             // Replace the contents.
-            line = line.replace(opts.templateFileRegexp, src);
+            line = line.replace(opts.wrapperFileRegexp, src);
             
           }
 
@@ -215,7 +221,7 @@ module.exports = function(grunt) {
 
         });
 
-        src = currentTemplate.join(newline);
+        src = currentWrapper.join(newline);
         
       }
       
@@ -260,6 +266,23 @@ module.exports = function(grunt) {
         }
 
         content = recurse(next, opts, level + 1, included, indents + indent);
+        
+        // Wrap file around in template if `opts.template` has '{{file}}' in it.
+        if (opts.template !== '' && opts.template.match(opts.templateFileRegexp)) {
+          currentTemplate = opts.template.split(newline).map(function(line) {
+            line = line.replace(templateFilenameRegexp, fileLocation);
+
+            if (line.match(opts.templateFileRegexp)) {
+              return line;
+            } else {
+              return indent + indents + line;
+            }
+          });
+
+          // Safe guard against $ replacements - this can probably be improved
+          content = content.replace(/\$/g, '$$$$');
+          content = currentTemplate.join(newline).replace(opts.templateFileRegexp, content);
+        }
 
         // Safe guard against $ replacements, change $ to $$
         content = content.replace(/\$/g, '$$$$');

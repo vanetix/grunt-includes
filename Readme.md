@@ -71,9 +71,20 @@ Default: `/\{\{\s?file\s?\}\}/`
 Regular expression for matching and replacing template text. Example: `Start of template | {{file}} | End of template`.
 
 #### template
-Type: `String` | `Path`
+Type: `String`
 
 Template to be rendered into, `{{fileName}}` and `{{file}}` will be replaced with the filename and file contents respectively.
+
+#### wrapperFileRegexp
+Type: `RegExp`
+Default: `/\{\{\s?file\s?\}\}/`
+
+Regular expression for matching and replacing file contents within a wrapper. Example: `Start of wrapper | {{file}} | End of wrapper`.
+
+#### wrapper
+Type: `String` | `Path`
+
+Wrapper to be rendered into, `{{fileName}}` and `{{file}}` will be replaced with the filename and file contents respectively.
 
 #### includeRegexp
 Type: `RegExp`
@@ -133,13 +144,13 @@ watch: {
 },
 ```
 
-Or build files based on a template, where `{{file}}` gets replaced with the contents of the file being parsed.
+Or build files with on a wrapper, where `{{file}}` gets replaced with the contents of the file being parsed.
 
 ```javascript
 includes: {
   target: {
     options: {
-      template: 'src/wrapper.html'
+      wrapper: 'src/wrapper.html'
     },
     files: [{
       cwd: 'src/',
@@ -189,6 +200,7 @@ includes: {
 ```
 
 ## Release History
+- 1.1.0 - Release wrapper ability by [laurenhamel](https://github.com/laurenhamel)
 - 0.5.0 - Given a full include path, filenamePrefix and filenameSuffix will now be ignored.
 - 0.4.0 - Release templating ability. Thanks [nathankot](https://github.com/nathankot)!
 - 0.3.7 - Various bug fixes and updates.
